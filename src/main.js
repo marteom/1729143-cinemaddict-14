@@ -15,7 +15,8 @@ const render = (container, template, place) => {
 };
 
 const FILM_COUNT = 5;
-const FILM_EXTRA_COUNT = 5;
+const FILM_EXTRA_COUNT = 2;
+const extraCaptions = ['Top rated', 'Most commented'];
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
@@ -38,14 +39,14 @@ for(let i=0; i<FILM_COUNT; i++){
     render(siteContentFilmsListContainer, createFilmCardTemplate(), 'beforeend');
 }
 
-//for(let i=0; i<FILM_EXTRA_COUNT; i++){
+for(let i=0; i<FILM_EXTRA_COUNT; i++){
     render(siteContentFilms, createFilmsListExtraTemplate(), 'beforeend');
-    const siteContentFilmsListExtra = document.querySelector('.films-list--extra');
-    console.log('films-list--extra: ',siteContentFilmsListExtra);
-//}
+    
+    const siteContentFilmsListExtras = siteContentFilms.querySelectorAll('.films-list--extra');
+    render(siteContentFilmsListExtras[i], createFilmsListExtraCaptionTemplate(extraCaptions[i]), 'beforeend');
+    render(siteContentFilmsListExtras[i], createFilmsListContainerTemplate(), 'beforeend');
 
-// !!!!!
-// const siteContentFilmsListExtras = siteContentFilms.querySelectorAll('.films-list--extra');
-// console.log(siteContentFilmsListExtras);
-// render(siteContentFilmsListExtras[0], createFilmsListExtraCaptionTemplate('Top rated'), 'beforeend');
-// render(siteContentFilmsListExtras[1], createFilmsListExtraCaptionTemplate('Most commented'), 'beforeend');
+    const filmsListContainerExtra = siteContentFilmsListExtras[i].querySelector('.films-list__container');
+    render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
+    render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
+}
