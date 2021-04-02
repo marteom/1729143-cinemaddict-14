@@ -9,6 +9,7 @@ import { createFilmsListContainerTemplate } from './view/films-list-container';
 import { createShowMoTemplate } from './view/showmo-element';
 import { createFilmsListExtraTemplate } from './view/films-list-extra';
 import { createFilmsListExtraCaptionTemplate } from './view/films-list-extra-caption';
+import { createFooterStatisticTemplate } from './view/footer-statistic';
 
 const render = (container, template, place) => {
     container.insertAdjacentHTML(place, template);
@@ -50,3 +51,7 @@ for(let i=0; i<FILM_EXTRA_COUNT; i++){
     render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
     render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
 }
+
+const siteFooterElement = document.querySelector('.footer');
+const footerStatistic = siteFooterElement.querySelector('.footer__statistics');
+render(footerStatistic, createFooterStatisticTemplate(), 'beforeend');
