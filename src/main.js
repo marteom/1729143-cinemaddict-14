@@ -2,6 +2,7 @@ import { createProfileTemplate } from './view/profile';
 import { createMainMenuTemplate } from './view/site-menu';
 import { createSortContentTemplate } from './view/sort-content';
 import { createFilmCardTemplate } from './view/film-card';
+import { createFilmsTemplate } from './view/films';
 
 const render = (container, template, place) => {
     container.insertAdjacentHTML(place, template);
