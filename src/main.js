@@ -5,6 +5,7 @@ import { createFilmCardTemplate } from './view/film-card';
 import { createFilmsTemplate } from './view/films';
 import { createFilmsListTemplate } from './view/films-list';
 import { createFilmsListCaptionTemplate } from './view/films-list-caption';
+import { createFilmsListContainerTemplate } from './view/films-list-container';
 
 const render = (container, template, place) => {
     container.insertAdjacentHTML(place, template);
