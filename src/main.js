@@ -4,6 +4,7 @@ import { createSortContentTemplate } from './view/sort-content';
 import { createFilmCardTemplate } from './view/film-card';
 import { createFilmsTemplate } from './view/films';
 import { createFilmsListTemplate } from './view/films-list';
+import { createFilmsListCaptionTemplate } from './view/films-list-caption';
 
 const render = (container, template, place) => {
     container.insertAdjacentHTML(place, template);
