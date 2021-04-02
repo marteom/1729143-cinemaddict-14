@@ -7,6 +7,7 @@ import { createFilmsListTemplate } from './view/films-list';
 import { createFilmsListCaptionTemplate } from './view/films-list-caption';
 import { createFilmsListContainerTemplate } from './view/films-list-container';
 import { createShowMoTemplate } from './view/showmo-element';
+import { createFilmsListExtraTemplate } from './view/films-list-extra';
 
 const render = (container, template, place) => {
     container.insertAdjacentHTML(place, template);
