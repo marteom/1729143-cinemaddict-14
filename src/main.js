@@ -15,8 +15,21 @@ const render = (container, template, place) => {
 const FILM_COUNT = 5;
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
-const displayFilmList = siteMainElement.querySelector('.films');
 
 render(siteHeaderElement, createProfileTemplate(), 'beforeend');
 render(siteMainElement, createMainMenuTemplate(), 'beforeend');
 render(siteMainElement, createSortContentTemplate(), 'beforeend');
+render(siteMainElement, createFilmsTemplate(), 'beforeend');
+
+const siteContentFilms = document.querySelector('.films');
+render(siteContentFilms, createFilmsListTemplate(), 'beforeend');
+
+const siteContentFilmsList = document.querySelector('.films-list');
+render(siteContentFilmsList, createFilmsListCaptionTemplate(), 'beforeend');
+render(siteContentFilmsList, createFilmsListContainerTemplate(), 'beforeend');
+render(siteContentFilmsList, createShowMoTemplate(), 'beforeend');
+
+const siteContentFilmsListContainer = document.querySelector('.films-list__container');
+for(let i=0; i<FILM_COUNT; i++){
+    render(siteContentFilmsListContainer, createFilmCardTemplate(), 'beforeend');
+}
