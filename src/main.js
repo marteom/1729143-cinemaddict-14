@@ -12,13 +12,12 @@ import { createFilmsListExtraCaptionTemplate } from './view/films-list-extra-cap
 import { createFooterStatisticTemplate } from './view/footer-statistic';
 
 const render = (container, template, place) => {
-    container.insertAdjacentHTML(place, template);
+  container.insertAdjacentHTML(place, template);
 };
 
 const FILM_COUNT = 5;
 const FILM_EXTRA_COUNT = 2;
 const extraCaptions = ['Top rated', 'Most commented'];
-
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 
@@ -37,19 +36,17 @@ render(siteContentFilmsList, createShowMoTemplate(), 'beforeend');
 
 const siteContentFilmsListContainer = document.querySelector('.films-list__container');
 for(let i=0; i<FILM_COUNT; i++){
-    render(siteContentFilmsListContainer, createFilmCardTemplate(), 'beforeend');
+  render(siteContentFilmsListContainer, createFilmCardTemplate(), 'beforeend');
 }
 
 for(let i=0; i<FILM_EXTRA_COUNT; i++){
-    render(siteContentFilms, createFilmsListExtraTemplate(), 'beforeend');
-    
-    const siteContentFilmsListExtras = siteContentFilms.querySelectorAll('.films-list--extra');
-    render(siteContentFilmsListExtras[i], createFilmsListExtraCaptionTemplate(extraCaptions[i]), 'beforeend');
-    render(siteContentFilmsListExtras[i], createFilmsListContainerTemplate(), 'beforeend');
-
-    const filmsListContainerExtra = siteContentFilmsListExtras[i].querySelector('.films-list__container');
-    render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
-    render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
+  render(siteContentFilms, createFilmsListExtraTemplate(), 'beforeend');
+  const siteContentFilmsListExtras = siteContentFilms.querySelectorAll('.films-list--extra');
+  render(siteContentFilmsListExtras[i], createFilmsListExtraCaptionTemplate(extraCaptions[i]), 'beforeend');
+  render(siteContentFilmsListExtras[i], createFilmsListContainerTemplate(), 'beforeend');
+  const filmsListContainerExtra = siteContentFilmsListExtras[i].querySelector('.films-list__container');
+  render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
+  render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
 }
 
 const siteFooterElement = document.querySelector('.footer');
