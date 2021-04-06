@@ -10,6 +10,7 @@ import { createShowMoTemplate } from './view/showmo-element';
 import { createFilmsListExtraTemplate } from './view/films-list-extra';
 import { createFilmsListExtraCaptionTemplate } from './view/films-list-extra-caption';
 import { createFooterStatisticTemplate } from './view/footer-statistic';
+import { generateFilm } from './mock/film';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -36,7 +37,7 @@ render(siteContentFilmsList, createShowMoTemplate(), 'beforeend');
 
 const siteContentFilmsListContainer = document.querySelector('.films-list__container');
 for(let i=0; i<FILM_COUNT; i++){
-  render(siteContentFilmsListContainer, createFilmCardTemplate(), 'beforeend');
+  render(siteContentFilmsListContainer, createFilmCardTemplate(generateFilm()), 'beforeend');
 }
 
 for(let i=0; i<FILM_EXTRA_COUNT; i++){
@@ -45,8 +46,8 @@ for(let i=0; i<FILM_EXTRA_COUNT; i++){
   render(siteContentFilmsListExtras[i], createFilmsListExtraCaptionTemplate(extraCaptions[i]), 'beforeend');
   render(siteContentFilmsListExtras[i], createFilmsListContainerTemplate(), 'beforeend');
   const filmsListContainerExtra = siteContentFilmsListExtras[i].querySelector('.films-list__container');
-  render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
-  render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
+  render(filmsListContainerExtra, createFilmCardTemplate(generateFilm()), 'beforeend');
+  render(filmsListContainerExtra, createFilmCardTemplate(generateFilm()), 'beforeend');
 }
 
 const siteFooterElement = document.querySelector('.footer');
