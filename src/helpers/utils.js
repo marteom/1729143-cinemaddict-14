@@ -16,4 +16,4 @@ export const generateValue = (inputArr) => {
 
 export const generateDescription = (descriptions) => {
   return new Array(getRandomInteger(1, 5)).fill().map(() => generateValue(descriptions));
-}
+};

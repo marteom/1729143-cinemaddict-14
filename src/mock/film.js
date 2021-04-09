@@ -1,7 +1,8 @@
-import { getRandomInteger, getFalseOrTrue, generateValue, generateDescription } from '../helpers/utils'; // это не тут должно быть?
+import { getRandomInteger, getFalseOrTrue, generateValue, generateDescription } from '../helpers/utils';
 import { GENRES } from '../helpers/const';
+import { generateComment } from './comment';
 
-export const description = [
+const description = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget.',
   'Fusce tristique felis at fermentum pharetra.',
@@ -15,7 +16,7 @@ export const description = [
   'In rutrum ac purus sit amet tempus.',
 ];
 
-export const titles = [
+const titles = [
   'made-for-each-other',
   'popeye-meets-sinbad',
   'sagebrush-trail',
@@ -25,7 +26,7 @@ export const titles = [
   'the-man-with-the-golden-arm',
 ];
 
-export const posters = [
+const posters = [
   './images/posters/made-for-each-other.png',
   './images/posters/popeye-meets-sinbad.png',
   './images/posters/sagebrush-trail.jpg',
@@ -34,8 +35,6 @@ export const posters = [
   './images/posters/the-great-flamarion.jpg',
   './images/posters/the-man-with-the-golden-arm.jpg',
 ];
-
-
 
 export const generateFilm = () => {
   return {
@@ -49,11 +48,6 @@ export const generateFilm = () => {
     isWatchList: getFalseOrTrue(),
     isWatched: getFalseOrTrue(),
     isFavorite: getFalseOrTrue(),
-    // comments: {
-    //   emotion: '',
-    //   date: '',
-    //   autor: '',
-    //   comment: '',
-    // },
+    comments: Array(getRandomInteger(0,5)).fill().map(generateComment),
   };
 };

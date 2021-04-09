@@ -11,6 +11,7 @@ import { createFilmsListExtraTemplate } from './view/films-list-extra';
 import { createFilmsListExtraCaptionTemplate } from './view/films-list-extra-caption';
 import { createFooterStatisticTemplate } from './view/footer-statistic';
 import { generateFilm } from './mock/film';
+import { EXTRA_CAPTIONS } from './helpers/const';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -18,7 +19,9 @@ const render = (container, template, place) => {
 
 const FILM_COUNT = 5;
 const FILM_EXTRA_COUNT = 2;
-const extraCaptions = ['Top rated', 'Most commented'];
+
+const films = new Array(FILM_COUNT).fill().map(generateFilm);
+
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 
@@ -37,13 +40,13 @@ render(siteContentFilmsList, createShowMoTemplate(), 'beforeend');
 
 const siteContentFilmsListContainer = document.querySelector('.films-list__container');
 for(let i=0; i<FILM_COUNT; i++){
-  render(siteContentFilmsListContainer, createFilmCardTemplate(generateFilm()), 'beforeend');
+  render(siteContentFilmsListContainer, createFilmCardTemplate(films[i]), 'beforeend');
 }
 
 for(let i=0; i<FILM_EXTRA_COUNT; i++){
   render(siteContentFilms, createFilmsListExtraTemplate(), 'beforeend');
   const siteContentFilmsListExtras = siteContentFilms.querySelectorAll('.films-list--extra');
-  render(siteContentFilmsListExtras[i], createFilmsListExtraCaptionTemplate(extraCaptions[i]), 'beforeend');
+  render(siteContentFilmsListExtras[i], createFilmsListExtraCaptionTemplate(EXTRA_CAPTIONS[i]), 'beforeend');
   render(siteContentFilmsListExtras[i], createFilmsListContainerTemplate(), 'beforeend');
   const filmsListContainerExtra = siteContentFilmsListExtras[i].querySelector('.films-list__container');
   render(filmsListContainerExtra, createFilmCardTemplate(generateFilm()), 'beforeend');
