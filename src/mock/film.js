@@ -2,7 +2,7 @@ import { getRandomInteger, getFalseOrTrue, generateValue, generateDescription } 
 import { GENRES } from '../helpers/const';
 import { generateComment } from './comment';
 
-const description = [
+const descriptions = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget.',
   'Fusce tristique felis at fermentum pharetra.',
@@ -40,7 +40,7 @@ export const generateFilm = () => {
   return {
     title: generateValue(titles),
     poster: generateValue(posters),
-    description: generateDescription(description),
+    description: generateDescription(descriptions),
     raiting: `${getRandomInteger(1, 9)}.${getRandomInteger(1, 9)}`,
     bornYear: getRandomInteger(1930, 2000),
     duration: `${getRandomInteger(1, 3)}h.${getRandomInteger(1, 59)}m`,
