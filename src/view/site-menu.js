@@ -2,10 +2,10 @@ const createMainMenuItemTemplate = (menuItem, isChecked) => {
   const {name, count} = menuItem;
 
   return (
-    name === 'all' ? `<a href="#all" class="main-navigation__item ${isChecked ? 'main-navigation__item--active' : ''}">All movies</a>` 
-    : `<a href="#${name}" class="main-navigation__item ${isChecked ? 'main-navigation__item--active' : ''}">${name.charAt(0).toUpperCase() + name.slice(1)} <span class="main-navigation__item-count">${count}</span></a>`
+    name === 'all' ? `<a href="#all" class="main-navigation__item ${isChecked ? 'main-navigation__item--active' : ''}">All movies</a>`
+      : `<a href="#${name}" class="main-navigation__item ${isChecked ? 'main-navigation__item--active' : ''}">${name.charAt(0).toUpperCase() + name.slice(1)} <span class="main-navigation__item-count">${count}</span></a>`
   );
-  ;
+
 };
 
 export const createMainMenuTemplate = (menuItems) => {

@@ -17,3 +17,19 @@ export const generateValue = (inputArr) => {
 export const generateDescription = (descriptions) => {
   return new Array(getRandomInteger(1, 5)).fill().map(() => generateValue(descriptions));
 };
+
+export const getMostCommented = (filmsArray, cntTop) => {
+  return filmsArray
+    .sort(function (a, b) {
+      return (a.comments).length - (b.comments).length;
+    })
+    .slice(-cntTop);
+};
+
+export const getTopRat = (filmsArray, cntTop) => {
+  return filmsArray
+    .sort(function (a, b) {
+      return a.raiting - b.raiting;
+    })
+    .slice(-cntTop);
+};
