@@ -19,17 +19,15 @@ export const generateDescription = (descriptions) => {
 };
 
 export const getMostCommented = (filmsArray, cntTop) => {
-  return filmsArray
-    .sort(function (a, b) {
-      return (a.comments).length - (b.comments).length;
-    })
+  return filmsArray.sort((a, b) => {
+    return (a.comments).length - (b.comments).length;
+  })
     .slice(-cntTop);
 };
 
 export const getTopRat = (filmsArray, cntTop) => {
-  return filmsArray
-    .sort(function (a, b) {
-      return a.raiting - b.raiting;
-    })
+  return filmsArray.sort((a, b) => {
+    return a.raiting - b.raiting;
+  })
     .slice(-cntTop);
 };

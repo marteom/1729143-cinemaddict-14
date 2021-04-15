@@ -1,3 +1,5 @@
+import { createFilmCommentsTemplate } from './film-comments';
+
 export const createFilmDetailsTemplate = (film = {}) => {
   const {
     title = '',
@@ -5,7 +7,7 @@ export const createFilmDetailsTemplate = (film = {}) => {
     country = '',
     description = '',
     raiting = '',
-    bornYear = '',
+    //bornYear = '',
     duration = '',
     genres = [],
     isWatchList = false,
@@ -22,9 +24,9 @@ export const createFilmDetailsTemplate = (film = {}) => {
 
   const getGenres = (genres) => {
     let genresList = '';
-    genres.forEach(genre => genresList += `<span class="film-details__genre">${genre}</span>`);
+    genres.forEach((genre) => genresList += `<span class="film-details__genre">${genre}</span>`);
     return genresList;
-  }
+  };
 
   return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -88,13 +90,13 @@ export const createFilmDetailsTemplate = (film = {}) => {
         </div>
   
         <section class="film-details__controls">
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+          <input type="checkbox" ${isWatchList ? 'checked' : ''} class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
   
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+          <input type="checkbox" ${isWatched ? 'checked' : ''} class="film-details__control-input visually-hidden" id="watched" name="watched">
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
   
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+          <input type="checkbox" ${isFavorite ? 'checked' : ''} class="film-details__control-input visually-hidden" id="favorite" name="favorite">
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>
@@ -102,6 +104,7 @@ export const createFilmDetailsTemplate = (film = {}) => {
       <div class="film-details__bottom-container">
         <section class="film-details__comments-wrap">
           <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
+          ${createFilmCommentsTemplate(comments)}
           <div class="film-details__new-comment">
             <div class="film-details__add-emoji-label"></div>
   
