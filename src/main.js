@@ -10,6 +10,8 @@ import { createShowMoTemplate } from "./view/showmo-element";
 import { createFilmsListExtraTemplate } from "./view/films-list-extra";
 import { createFilmsListExtraCaptionTemplate } from "./view/films-list-extra-caption";
 import { createFooterStatisticTemplate } from "./view/footer-statistic";
+import { createFilmDetailsTemplate } from './view/film-details';
+import { createFilmCommentsTemplate } from './view/film-comments';
 import { generateFilm } from "./mock/film";
 import { generateItem } from "./mock/menu";
 import { EXTRA_CAPTIONS } from "./helpers/const";
@@ -26,12 +28,14 @@ let film_count_showed = FILM_COUNT_PER_STEP;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilm);
 const menuItems = generateItem(films);
-
+console.log(films);
 const siteHeaderElement = document.querySelector(".header");
 const siteMainElement = document.querySelector(".main");
 
 render(siteHeaderElement, createProfileTemplate(), "beforeend");
 render(siteMainElement, createMainMenuTemplate(menuItems), "beforeend");
+render(siteMainElement, createFilmDetailsTemplate(films[0]), "beforeend");
+//render(siteMainElement, createFilmCommentsTemplate, "beforeend");
 render(siteMainElement, createSortContentTemplate(), "beforeend");
 render(siteMainElement, createFilmsTemplate(), "beforeend");
 

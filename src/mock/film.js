@@ -1,6 +1,7 @@
 import { getRandomInteger, getFalseOrTrue, generateValue, generateDescription } from '../helpers/utils';
 import { GENRES } from '../helpers/const';
 import { generateComment } from './comment';
+import dayjs from 'dayjs';
 
 const descriptions = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -26,6 +27,22 @@ const titles = [
   'the-man-with-the-golden-arm',
 ];
 
+const directors = [
+  'Anthony Mann',
+  'Steven Spielberg',
+  'Woody Allen',
+  'Luc Besson',
+  'Stanley Kubrick',
+];
+
+const actors = [
+  'Tom Cruise',
+  'Benedict Cumberbatch',
+  'Keanu Reeves',
+  'Milla Jovovich',
+  'Keira Knightley',
+];
+
 const posters = [
   './images/posters/made-for-each-other.png',
   './images/posters/popeye-meets-sinbad.png',
@@ -36,18 +53,32 @@ const posters = [
   './images/posters/the-man-with-the-golden-arm.jpg',
 ];
 
+const countries = [
+  'USA',
+  'Russia',
+  'Poland',
+  'Germany',
+  'Italy',
+];
+
 export const generateFilm = () => {
   return {
     title: generateValue(titles),
     poster: generateValue(posters),
+    country: generateValue(countries),
     description: generateDescription(descriptions),
     raiting: `${getRandomInteger(1, 9)}.${getRandomInteger(1, 9)}`,
     bornYear: getRandomInteger(1930, 2000),
     duration: `${getRandomInteger(1, 3)}h.${getRandomInteger(1, 59)}m`,
-    genre: generateValue(GENRES),
+    genres: Array(getRandomInteger(1,3)).fill().map(() => generateValue(GENRES)),
     isWatchList: getFalseOrTrue(),
     isWatched: getFalseOrTrue(),
     isFavorite: getFalseOrTrue(),
     comments: Array(getRandomInteger(0,5)).fill().map(generateComment),
+    detailsAge: getRandomInteger(0, 18),
+    director: generateValue(directors),
+    writers: Array(getRandomInteger(1,3)).fill().map(() => generateValue(directors)),
+    actors: Array(getRandomInteger(1,5)).fill().map(() => generateValue(actors)),
+    releaseDate: dayjs(`${getRandomInteger(1985,2021)}, ${getRandomInteger(1,12)}, ${getRandomInteger(1,25)}`).format('DD MMMM YYYY'),
   };
 };
