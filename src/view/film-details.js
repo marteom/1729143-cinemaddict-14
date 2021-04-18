@@ -1,6 +1,8 @@
-import { createFilmCommentsTemplate } from './film-comments';
+import {createElement} from '../helpers/utils';
+import FilmCommentsView from './film-comments'; //import { createFilmCommentsTemplate } from './film-comments';
 
-export const createFilmDetailsTemplate = (film = {}) => {
+
+const createFilmDetailsTemplate = (film = {}) => {
   const {
     title = '',
     poster = '',
@@ -104,7 +106,9 @@ export const createFilmDetailsTemplate = (film = {}) => {
       <div class="film-details__bottom-container">
         <section class="film-details__comments-wrap">
           <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
-          ${createFilmCommentsTemplate(comments)}
+          ${
+            new FilmCommentsView(comments).getElement() //createFilmCommentsTemplate(comments)
+          }
           <div class="film-details__new-comment">
             <div class="film-details__add-emoji-label"></div>
   
@@ -139,3 +143,26 @@ export const createFilmDetailsTemplate = (film = {}) => {
     </form>
   </section>`;
 };
+
+export default class FilmDetails {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetailsTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
