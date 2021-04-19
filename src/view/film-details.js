@@ -127,6 +127,15 @@ const createFilmDetailsTemplate = (film = {}) => {
   </section>`;
 };
 
+const onEscKeyDown = (evt) => {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    evt.preventDefault();
+    const filmDetailsElement = document.querySelector('.film-details');
+    filmDetailsElement !== null ? hideFilmDetails(filmDetailsElement) : '';
+  }
+};
+document.addEventListener('keydown', onEscKeyDown);
+
 export default class FilmDetails {
   constructor(film) {
     this._film = film;
