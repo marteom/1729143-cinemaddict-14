@@ -1,3 +1,5 @@
+import {createElement} from '../helpers/utils';
+
 const createMainMenuItemTemplate = (menuItem, isChecked) => {
   const {name, count} = menuItem;
 
@@ -8,7 +10,7 @@ const createMainMenuItemTemplate = (menuItem, isChecked) => {
 
 };
 
-export const createMainMenuTemplate = (menuItems) => {
+const createMainMenuTemplate = (menuItems) => {
   const menuItemsTemplate = menuItems
     .map((menuItem, index) => createMainMenuItemTemplate(menuItem, index === 0))
     .join('');
@@ -20,5 +22,28 @@ export const createMainMenuTemplate = (menuItems) => {
     <a href="#stats" class="main-navigation__additional">Stats</a>
   </nav>`;
 };
+
+export default class SiteMenu {
+  constructor(menuItems) {
+    this._menuItems = menuItems;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createMainMenuTemplate(this._menuItems);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
 
 
