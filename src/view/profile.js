@@ -1,4 +1,4 @@
-import {createElement} from '../helpers/utils';
+import AbstractView from './abstract.js';
 
 const createProfileTemplate = (raiting) => {
   return `<section class="header__profile profile">
@@ -7,25 +7,13 @@ const createProfileTemplate = (raiting) => {
   </section>`;
 };
 
-export default class Profile {
+export default class Profile extends AbstractView {
   constructor(raiting) {
+    super();
     this._raiting = raiting;
-    this._element = null;
   }
 
   getTemplate() {
     return createProfileTemplate(this._raiting);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

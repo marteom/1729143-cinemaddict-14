@@ -14,10 +14,11 @@ import FilmsListEmptyView from './view/films-list-empty';
 import { generateFilm } from './mock/film';
 import { generateItem } from './mock/menu';
 import { EXTRA_CAPTIONS } from './helpers/const';
-import { getMostCommented, getTopRat, renderElement, RenderPosition } from './helpers/utils';
+import { getMostCommented, getTopRat, renderElement, RenderPosition, viewFilmDetails } from './helpers/utils';
+import { remove } from './utils/render';
 
 const FILM_COUNT_PER_STEP = 5;
-const FILMS_COUNT = 23;
+const FILMS_COUNT = 27;
 const FILM_EXTRA_COUNT = 2;
 let film_count_showed = FILM_COUNT_PER_STEP;
 
@@ -49,10 +50,9 @@ else{
   }
 
   if (FILMS_COUNT > FILM_COUNT_PER_STEP) {
-    renderElement(siteContentFilmsList, new ShowMoView().getElement(), RenderPosition.BEFOREEND);
-    const showMoreButton = siteContentFilmsList.querySelector('.films-list__show-more');
-    showMoreButton.addEventListener('click', (evt) => {
-      evt.preventDefault();
+    const showMoButtonComponent = new ShowMoView();
+    renderElement(siteContentFilmsList, showMoButtonComponent.getElement(), RenderPosition.BEFOREEND);
+    showMoButtonComponent.setClickHandler(() => {
       films
         .slice(film_count_showed, film_count_showed + FILM_COUNT_PER_STEP)
         .forEach((film) =>
@@ -62,7 +62,7 @@ else{
       film_count_showed += FILM_COUNT_PER_STEP;
 
       if (film_count_showed >= FILMS_COUNT) {
-        showMoreButton.remove();
+        remove(showMoButtonComponent);
       }
     });
   }
@@ -90,4 +90,13 @@ else{
   const siteFooterElement = document.querySelector('.footer');
   const footerStatistic = siteFooterElement.querySelector('.footer__statistics');
   renderElement(footerStatistic, new FooterStatisticView(films.length).getElement(), RenderPosition.BEFOREEND);
+
+
+  //   const filmCardTitle = this._element.querySelector('.film-card__title');
+  //   if(filmCardTitle !== null){
+  //     filmCardTitle.addEventListener('click', () => {
+  //       viewFilmDetails(this._film);
+  //     });
+  //   }
+
 }

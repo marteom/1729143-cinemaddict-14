@@ -1,4 +1,4 @@
-import {createElement} from '../helpers/utils';
+import AbstractView from './abstract.js';
 
 const createMainMenuItemTemplate = (menuItem, isChecked) => {
   const {name, count} = menuItem;
@@ -23,26 +23,14 @@ const createMainMenuTemplate = (menuItems) => {
   </nav>`;
 };
 
-export default class SiteMenu {
+export default class SiteMenu extends AbstractView {
   constructor(menuItems) {
+    super();
     this._menuItems = menuItems;
-    this._element = null;
   }
 
   getTemplate() {
     return createMainMenuTemplate(this._menuItems);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
