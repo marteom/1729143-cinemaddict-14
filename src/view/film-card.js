@@ -40,40 +40,13 @@ export default class FilmCard extends AbstractView {
   _clickHandler(evt) {
     evt.preventDefault();
     this._callback.click();
+    if(evt.target.className === 'film-card__title' || evt.target.className === 'film-card__poster' || evt.target.className === 'film-card__comments'){
+      viewFilmDetails(this._film);
+    }
   }
 
   setClickHandler(callback) {
     this._callback.click = callback;
     this.getElement().addEventListener('click', this._clickHandler);
   }
-
-  // getElement() {
-  //   if (!this._element) {
-  //     this._element = createElement(this.getTemplate());
-  //   }
-
-
-  //   const filmCardTitle = this._element.querySelector('.film-card__title');
-  //   if(filmCardTitle !== null){
-  //     filmCardTitle.addEventListener('click', () => {
-  //       viewFilmDetails(this._film);
-  //     });
-  //   }
-
-  //   const filmCardPoster = this._element.querySelector('.film-card__poster');
-  //   if(filmCardPoster !== null){
-  //     filmCardPoster.addEventListener('click', () => {
-  //       viewFilmDetails(this._film);
-  //     });
-  //   }
-
-  //   const filmCardComments = this._element.querySelector('.film-card__comments');
-  //   if(filmCardComments !== null){
-  //     filmCardComments.addEventListener('click', () => {
-  //       viewFilmDetails(this._film);
-  //     });
-  //   }
-
-  //   return this._element;
-  // }
 }
