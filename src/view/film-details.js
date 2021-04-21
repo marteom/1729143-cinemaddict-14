@@ -1,5 +1,6 @@
-import { createElement, hideFilmDetails } from '../helpers/utils';
+import { hideFilmDetails } from '../helpers/utils';
 import { createFilmCommentsTemplate } from './film-comments';
+import AbstractView from './abstract.js';
 
 const createFilmDetailsTemplate = (film = {}) => {
   const {
@@ -136,15 +137,27 @@ const onEscKeyDown = (evt) => {
 };
 document.addEventListener('keydown', onEscKeyDown);
 
-export default class FilmDetails {
+export default class FilmDetails extends AbstractView{
   constructor(film) {
+    //super();
     this._film = film;
     this._element = null;
+//    this._clickHandler = this._clickHandler.bind(this);
   }
 
-  getTemplate() {
-    return createFilmDetailsTemplate(this._film);
-  }
+  // getTemplate() {
+  //   return createFilmDetailsTemplate(this._film);
+  // }
+
+  // _clickHandler(evt) {
+  //   evt.preventDefault();
+  //   this._callback.click();
+  // }
+
+  // setClickHandler(callback) {
+  //   this._callback.click = callback;
+  //   this.getElement().addEventListener('click', this._clickHandler);
+  // }
 
   getElement() {
     if (!this._element) {

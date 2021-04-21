@@ -1,4 +1,3 @@
-import { viewFilmDetails } from '../helpers/utils';
 import AbstractView from './abstract.js';
 
 const createFilmCardTemplate = (film) => {
@@ -39,9 +38,8 @@ export default class FilmCard extends AbstractView {
 
   _clickHandler(evt) {
     evt.preventDefault();
-    this._callback.click();
     if(evt.target.className === 'film-card__title' || evt.target.className === 'film-card__poster' || evt.target.className === 'film-card__comments'){
-      viewFilmDetails(this._film);
+      this._callback.click();
     }
   }
 

@@ -18,7 +18,7 @@ import { getMostCommented, getTopRat, renderElement, RenderPosition, viewFilmDet
 import { remove } from './utils/render';
 
 const FILM_COUNT_PER_STEP = 5;
-const FILMS_COUNT = 27;
+const FILMS_COUNT = 17;
 const FILM_EXTRA_COUNT = 2;
 let film_count_showed = FILM_COUNT_PER_STEP;
 let filmCardElement = null;
@@ -50,6 +50,7 @@ else{
     filmCardElement = new FilmCardView(films[i]);
     films.length > i ? renderElement(siteContentFilmsListContainer, filmCardElement.getElement(), RenderPosition.BEFOREEND) : '';
     filmCardElement.setClickHandler(() => {
+      viewFilmDetails(films[i]);
     });
   }
 
@@ -59,12 +60,13 @@ else{
     showMoButtonComponent.setClickHandler(() => {
       films
         .slice(film_count_showed, film_count_showed + FILM_COUNT_PER_STEP)
-        .forEach((film) =>
+        .forEach((film) => {
           filmCardElement = new FilmCardView(film),
           renderElement(siteContentFilmsListContainer, filmCardElement.getElement(), RenderPosition.BEFOREEND),
-          // filmCardElement.setClickHandler(() => {
-          // })
-        );
+          filmCardElement.setClickHandler(() => {
+            viewFilmDetails(film);
+          });
+        });
 
       film_count_showed += FILM_COUNT_PER_STEP;
 
@@ -89,6 +91,7 @@ else{
     renderElement(filmsListContainerExtra, filmCardElement.getElement(), RenderPosition.BEFOREEND);
 
     filmCardElement.setClickHandler(() => {
+      viewFilmDetails(topRat[i]);
     });
   }
 
@@ -97,8 +100,9 @@ else{
     const filmsListContainerExtra = siteContentFilmsListExtras[1].querySelector('.films-list__container');
     filmCardElement = new FilmCardView(mostCommented[i]);
     renderElement(filmsListContainerExtra, filmCardElement.getElement(), RenderPosition.BEFOREEND);
-    
+
     filmCardElement.setClickHandler(() => {
+      viewFilmDetails(mostCommented[i]);
     });
 
   }
