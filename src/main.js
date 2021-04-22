@@ -18,14 +18,24 @@ import { EXTRA_CAPTIONS } from './utils/const';
 import { getMostCommented, getTopRat, viewFilmDetails, hideFilmDetails } from './utils/film';
 import { remove, RenderPosition, renderElement } from './utils/render';
 
+
+const onEscKeyDown = (evt) => {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    evt.preventDefault();
+    const filmDetails = document.querySelector('.film-details');
+    filmDetails !== null ? hideFilmDetails(filmDetails) : '';
+    document.removeEventListener('keydown', onEscKeyDown);
+  }
+};
+
 const renderFilmCard = (filmsListContainer, film) => {
   const filmElement = new FilmCardView(film);
   renderElement(filmsListContainer, filmElement, RenderPosition.BEFOREEND);
-
   filmElement.setClickHandler(() => {
     const filmDetails = new FilmDetailsView(film);
     viewFilmDetails(filmDetails.getElement());
-    filmDetails.setClickHandler(() =>{
+    document.addEventListener('keydown', onEscKeyDown);
+    filmDetails.setClickHandler(() => {
       hideFilmDetails(filmDetails.getElement());
     });
   });

@@ -1,5 +1,4 @@
 import { createFilmCommentsTemplate } from './film-comments';
-import { hideFilmDetails } from '../utils/film';
 import AbstractView from './abstract.js';
 
 const createFilmDetailsTemplate = (film = {}) => {
@@ -28,15 +27,6 @@ const createFilmDetailsTemplate = (film = {}) => {
     genres.forEach((genre) => genresList += `<span class="film-details__genre">${genre}</span>`);
     return genresList;
   };
-
-  const onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
-      const filmDetails = document.querySelector('.film-details');
-      filmDetails !== null ? hideFilmDetails(filmDetails) : '';
-    }
-  };
-  document.addEventListener('keydown', onEscKeyDown);
 
   return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -160,4 +150,5 @@ export default class FilmDetails extends AbstractView {
     this._callback.click = callback;
     this.getElement().addEventListener('click', this._clickHandler);
   }
+
 }
