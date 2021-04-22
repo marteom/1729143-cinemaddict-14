@@ -1,5 +1,6 @@
-import { getRandomInteger, getFalseOrTrue, generateValue, generateDescription } from '../helpers/utils';
-import { GENRES } from '../helpers/const';
+import { generateValue, generateDescription } from '../utils/film';
+import { getRandomInteger, getFalseOrTrue } from '../utils/common';
+import { GENRES } from '../utils/const';
 import { generateComment } from './comment';
 import dayjs from 'dayjs';
 

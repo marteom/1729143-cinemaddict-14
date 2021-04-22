@@ -1,5 +1,5 @@
-import { hideFilmDetails } from '../helpers/utils';
 import { createFilmCommentsTemplate } from './film-comments';
+import { hideFilmDetails } from '../utils/film';
 import AbstractView from './abstract.js';
 
 const createFilmDetailsTemplate = (film = {}) => {
@@ -28,6 +28,15 @@ const createFilmDetailsTemplate = (film = {}) => {
     genres.forEach((genre) => genresList += `<span class="film-details__genre">${genre}</span>`);
     return genresList;
   };
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      const filmDetails = document.querySelector('.film-details');
+      filmDetails !== null ? hideFilmDetails(filmDetails) : '';
+    }
+  };
+  document.addEventListener('keydown', onEscKeyDown);
 
   return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -128,53 +137,27 @@ const createFilmDetailsTemplate = (film = {}) => {
   </section>`;
 };
 
-const onEscKeyDown = (evt) => {
-  if (evt.key === 'Escape' || evt.key === 'Esc') {
-    evt.preventDefault();
-    const filmDetailsElement = document.querySelector('.film-details');
-    filmDetailsElement !== null ? hideFilmDetails(filmDetailsElement) : '';
-  }
-};
-document.addEventListener('keydown', onEscKeyDown);
-
-export default class FilmDetails extends AbstractView{
+export default class FilmDetails extends AbstractView {
   constructor(film) {
-    //super();
+    super();
     this._film = film;
     this._element = null;
-//    this._clickHandler = this._clickHandler.bind(this);
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
-  // getTemplate() {
-  //   return createFilmDetailsTemplate(this._film);
-  // }
-
-  // _clickHandler(evt) {
-  //   evt.preventDefault();
-  //   this._callback.click();
-  // }
-
-  // setClickHandler(callback) {
-  //   this._callback.click = callback;
-  //   this.getElement().addEventListener('click', this._clickHandler);
-  // }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    const filmDetailsCloseBtn = this._element.querySelector('.film-details__close-btn');
-    if(filmDetailsCloseBtn !== null){
-      filmDetailsCloseBtn.addEventListener('click', () => {
-        hideFilmDetails(this._element);
-      });
-    }
-
-    return this._element;
+  getTemplate() {
+    return createFilmDetailsTemplate(this._film);
   }
 
-  removeElement() {
-    this._element = null;
+  _clickHandler(evt) {
+    evt.preventDefault();
+    if(evt.target.className === 'film-details__close-btn'){
+      this._callback.click();
+    }
+  }
+
+  setClickHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().addEventListener('click', this._clickHandler);
   }
 }
