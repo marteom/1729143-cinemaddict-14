@@ -1,5 +1,5 @@
-import { createElement, hideFilmDetails } from '../helpers/utils';
 import { createFilmCommentsTemplate } from './film-comments';
+import AbstractView from './abstract.js';
 
 const createFilmDetailsTemplate = (film = {}) => {
   const {
@@ -127,41 +127,28 @@ const createFilmDetailsTemplate = (film = {}) => {
   </section>`;
 };
 
-const onEscKeyDown = (evt) => {
-  if (evt.key === 'Escape' || evt.key === 'Esc') {
-    evt.preventDefault();
-    const filmDetailsElement = document.querySelector('.film-details');
-    filmDetailsElement !== null ? hideFilmDetails(filmDetailsElement) : '';
-  }
-};
-document.addEventListener('keydown', onEscKeyDown);
-
-export default class FilmDetails {
+export default class FilmDetails extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
     this._element = null;
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmDetailsTemplate(this._film);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
+  _clickHandler(evt) {
+    evt.preventDefault();
+    if(evt.target.className === 'film-details__close-btn'){
+      this._callback.click();
     }
-
-    const filmDetailsCloseBtn = this._element.querySelector('.film-details__close-btn');
-    if(filmDetailsCloseBtn !== null){
-      filmDetailsCloseBtn.addEventListener('click', () => {
-        hideFilmDetails(this._element);
-      });
-    }
-
-    return this._element;
   }
 
-  removeElement() {
-    this._element = null;
+  setClickHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().addEventListener('click', this._clickHandler);
   }
+
 }

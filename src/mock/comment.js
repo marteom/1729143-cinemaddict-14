@@ -1,5 +1,6 @@
-import { getRandomInteger, generateValue } from '../helpers/utils';
-import { EMOTIONS } from '../helpers/const';
+import { generateValue } from '../utils/film';
+import { getRandomInteger } from '../utils/common';
+import { EMOTIONS } from '../utils/const';
 import dayjs from 'dayjs';
 
 const autors = [

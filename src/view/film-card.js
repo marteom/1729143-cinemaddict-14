@@ -1,4 +1,4 @@
-import { createElement, viewFilmDetails } from '../helpers/utils';
+import AbstractView from './abstract.js';
 
 const createFilmCardTemplate = (film) => {
   const { title, raiting, bornYear, duration, genres, poster, description, isWatchList, isWatched, isFavorite, comments } = film;
@@ -25,47 +25,26 @@ const createFilmCardTemplate = (film) => {
         </article>`;
 };
 
-export default class FilmCard {
+export default class FilmCard extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._film);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
+  _clickHandler(evt) {
+    evt.preventDefault();
+    if(evt.target.className === 'film-card__title' || evt.target.className === 'film-card__poster' || evt.target.className === 'film-card__comments'){
+      this._callback.click();
     }
-
-
-    const filmCardTitle = this._element.querySelector('.film-card__title');
-    if(filmCardTitle !== null){
-      filmCardTitle.addEventListener('click', () => {
-        viewFilmDetails(this._film);
-      });
-    }
-
-    const filmCardPoster = this._element.querySelector('.film-card__poster');
-    if(filmCardPoster !== null){
-      filmCardPoster.addEventListener('click', () => {
-        viewFilmDetails(this._film);
-      });
-    }
-
-    const filmCardComments = this._element.querySelector('.film-card__comments');
-    if(filmCardComments !== null){
-      filmCardComments.addEventListener('click', () => {
-        viewFilmDetails(this._film);
-      });
-    }
-
-    return this._element;
   }
 
-  removeElement() {
-    this._element = null;
+  setClickHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().addEventListener('click', this._clickHandler);
   }
 }
