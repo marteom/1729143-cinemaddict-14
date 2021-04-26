@@ -1,23 +1,25 @@
 import ProfileView from './view/profile';
 import SiteMenuView from './view/site-menu';
-import SortContentView from './view/sort-content';
-import FilmCardView from './view/film-card';
-import FilmsView from './view/films';
-import FilmsListView from './view/films-list';
-import FilmsListCaptionView from './view/films-list-caption';
-import FilmsListContainerView from './view/films-list-container';
-import ShowMoView from './view/showmo-element';
-import FilmsListExtraView from './view/films-list-extra';
-import FilmsListExtraCaptionView from './view/films-list-extra-caption';
 import FooterStatisticView from './view/footer-statistic';
-import FilmsListEmptyView from './view/films-list-empty';
-import FilmDetailsView from './view/film-details';
+
+import FilmDetailsView from './view/film-details'; // +
+
+import SortContentView from './view/sort-content'; // + 
+import FilmCardView from './view/film-card'; // +
+import FilmsView from './view/films'; // +
+import FilmsListView from './view/films-list'; // +
+import FilmsListCaptionView from './view/films-list-caption'; // +
+import FilmsListContainerView from './view/films-list-container'; // +
+import ShowMoView from './view/showmo-element'; // +
+import FilmsListExtraView from './view/films-list-extra'; // +
+import FilmsListExtraCaptionView from './view/films-list-extra-caption'; // +
+import FilmsListEmptyView from './view/films-list-empty'; // +
+import { EXTRA_CAPTIONS } from './utils/const'; // + 
+import { getMostCommented, getTopRat, viewFilmDetails, hideFilmDetails } from './utils/film'; // + +
+import { remove, RenderPosition, renderElement } from './utils/render'; // + +
+
 import { generateFilm } from './mock/film';
 import { generateItem } from './mock/menu';
-import { EXTRA_CAPTIONS } from './utils/const';
-import { getMostCommented, getTopRat, viewFilmDetails, hideFilmDetails } from './utils/film';
-import { remove, RenderPosition, renderElement } from './utils/render';
-
 
 const onEscKeyDown = (evt) => {
   if (evt.key === 'Escape' || evt.key === 'Esc') {
@@ -43,7 +45,7 @@ const renderFilmCard = (filmsListContainer, film) => {
   return filmElement;
 };
 
-const FILM_COUNT_PER_STEP = 5;
+const FILM_COUNT_PER_STEP = 5; // +
 const FILMS_COUNT = 13;
 const FILM_EXTRA_COUNT = 2;
 let film_count_showed = FILM_COUNT_PER_STEP;
