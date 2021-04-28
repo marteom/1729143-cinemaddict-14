@@ -9,19 +9,32 @@ export default class Film{
     this._handleFilmCardCloseClick = this._handleFilmCardCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
 
-    this._handleWatchlistFilmCardClick = this._handleWatchlistFilmCardClick.bind(this);
+    this._handleWatchListFilmCardClick = this._handleWatchListFilmCardClick.bind(this);
+    this._handleWatchedFilmCardClick = this._handleWatchedFilmCardClick.bind(this);
+    this._handleFavouriteFilmCardClick = this._handleFavouriteFilmCardClick.bind(this);
   }
 
   init(film){
     this._film = film;
     const filmCardViewComponent = new FilmCardView(film);
     filmCardViewComponent.setClickHandler(this._handleFilmCardClick);
-    filmCardViewComponent.setWatchlistClickHandler(this._handleWatchlistFilmCardClick);
+    filmCardViewComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
+    filmCardViewComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
+    filmCardViewComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
+
     renderElement(this._filmsListContainer, filmCardViewComponent, RenderPosition.BEFOREEND);
   }
 
-  _handleWatchlistFilmCardClick() {
-    console.log('wwww');
+  _handleWatchListFilmCardClick() {
+    console.log('_handleWatchListFilmCardClick');
+  }
+
+  _handleWatchedFilmCardClick(){
+    console.log('_handleWatchedFilmCardClick');
+  }
+
+  _handleFavouriteFilmCardClick(){
+    console.log('_handleFavouriteFilmCardClick');
   }
 
   _updateFilms(){
@@ -31,6 +44,10 @@ export default class Film{
   _handleFilmCardClick() {
     this._filmDetails = new FilmDetailsView(this._film);
     this._filmDetails.setClickHandler(this._handleFilmCardCloseClick);
+
+    this._filmDetails.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
+    this._filmDetails.setWatchedClickHandler(this._handleWatchedFilmCardClick);
+    this._filmDetails.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
     
     this._viewFilmDetails();
   }

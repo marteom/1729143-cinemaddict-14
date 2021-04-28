@@ -29,11 +29,10 @@ export default class FilmCard extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
-    // this._callbackWatchlist = {};
-    // this._callbackWatched = {};
-    // this._callbackFavorite = {};
     this._clickHandler = this._clickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
+    this._watchedClickHandler = this._watchedClickHandler.bind(this);
+    this._favouriteClickHandler = this._favouriteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -45,35 +44,21 @@ export default class FilmCard extends AbstractView {
     if(evt.target.className === 'film-card__title' || evt.target.className === 'film-card__poster' || evt.target.className === 'film-card__comments'){
       this._callback.click();
     }
-
-    // switch(evt.target.id){
-    //   case 'addToWatchlist':
-    //     this._addToWatchlist();
-    //     break;
-    //   case 'markAsWatched':
-    //     this._markAsWatched();
-    //     break;        
-    //   case 'markAsFavorite':
-    //     this._markAsFavorite();
-    //     break;}
-
-  }
-
-  _addToWatchlist(){
-    console.log('_addToWatchlist');
-  }
-
-  _markAsWatched(){
-    console.log('_markAsWatched');
-  }
-
-  _markAsFavorite(){
-    console.log('_markAsFavorite');
   }
 
   _watchlistClickHandler(evt) {
     evt.preventDefault();
     this._callback.watchListClick();
+  }
+
+  _watchedClickHandler(evt){
+    evt.preventDefault();
+    this._callback.watchedClick();
+  }
+
+  _favouriteClickHandler(evt){
+    evt.preventDefault();
+    this._callback.favouriteClick(); 
   }
 
   setClickHandler(callback) {
@@ -83,10 +68,25 @@ export default class FilmCard extends AbstractView {
 
   setWatchlistClickHandler(callback) {
     this._callback.watchListClick = callback;
-    
     const watchlistButton = this.getElement().querySelector('.film-card__controls-item--add-to-watchlist');
     if(watchlistButton !== null){
       watchlistButton.addEventListener('click', this._watchlistClickHandler);
+    }
+  }
+
+  setWatchedClickHandler(callback) {
+    this._callback.watchedClick = callback;
+    const watchedButton = this.getElement().querySelector('.film-card__controls-item--mark-as-watched');
+    if(watchedButton !== null){
+      watchedButton.addEventListener('click', this._watchedClickHandler);
+    }
+  }
+
+  setFavouriteClickHandler(callback) {
+    this._callback.favouriteClick = callback;
+    const favouriteButton = this.getElement().querySelector('.film-card__controls-item--favorite');
+    if(favouriteButton !== null){
+      favouriteButton.addEventListener('click', this._favouriteClickHandler);
     }
   }
 

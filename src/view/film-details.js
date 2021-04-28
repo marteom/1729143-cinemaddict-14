@@ -133,6 +133,9 @@ export default class FilmDetails extends AbstractView {
     this._film = film;
     this._element = null;
     this._clickHandler = this._clickHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
+    this._watchedClickHandler = this._watchedClickHandler.bind(this);
+    this._favouriteClickHandler = this._favouriteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -146,9 +149,48 @@ export default class FilmDetails extends AbstractView {
     }
   }
 
+  _watchlistClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchListClick();
+  }
+
+  _watchedClickHandler(evt){
+    evt.preventDefault();
+    this._callback.watchedClick();
+  }
+
+  _favouriteClickHandler(evt){
+    evt.preventDefault();
+    this._callback.favouriteClick(); 
+  }
+
   setClickHandler(callback) {
     this._callback.click = callback;
     this.getElement().addEventListener('click', this._clickHandler);
+  }
+
+  setWatchlistClickHandler(callback) {
+    this._callback.watchListClick = callback;
+    const watchlistInput = this.getElement().querySelector('.film-details__control-label--watchlist');
+    if(watchlistInput !== null){
+      watchlistInput.addEventListener('click', this._watchlistClickHandler);
+    }
+  }
+
+  setWatchedClickHandler(callback) {
+    this._callback.watchedClick = callback;
+    const watchedInput = this.getElement().querySelector('.film-details__control-label--watched');
+    if(watchedInput !== null){
+      watchedInput.addEventListener('click', this._watchedClickHandler);
+    }
+  }
+
+  setFavouriteClickHandler(callback) {
+    this._callback.favouriteClick = callback;
+    const favouriteInput = this.getElement().querySelector('.film-details__control-label--favorite');
+    if(favouriteInput !== null){
+      favouriteInput.addEventListener('click', this._favouriteClickHandler);
+    }
   }
 
 }
