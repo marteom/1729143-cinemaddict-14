@@ -18,9 +18,9 @@ const createFilmCardTemplate = (film) => {
           <p class="film-card__description">${description}</p>
           <a class="film-card__comments">${comments.length} comments</a>
           <div class="film-card__controls">
-            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${isWatchListActive}" type="button">Add to watchlist</button>
-            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${isWatchedActive}" type="button">Mark as watched</button>
-            <button class="film-card__controls-item button film-card__controls-item--favorite ${isFavoriteActive}" type="button">Mark as favorite</button>
+            <button id="addToWatchlist" class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${isWatchListActive}" type="button">Add to watchlist</button>
+            <button id="markAsWatched" class="film-card__controls-item button film-card__controls-item--mark-as-watched ${isWatchedActive}" type="button">Mark as watched</button>
+            <button id="markAsFavorite" class="film-card__controls-item button film-card__controls-item--favorite ${isFavoriteActive}" type="button">Mark as favorite</button>
           </div>
         </article>`;
 };
@@ -29,7 +29,11 @@ export default class FilmCard extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
+    // this._callbackWatchlist = {};
+    // this._callbackWatched = {};
+    // this._callbackFavorite = {};
     this._clickHandler = this._clickHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -41,10 +45,49 @@ export default class FilmCard extends AbstractView {
     if(evt.target.className === 'film-card__title' || evt.target.className === 'film-card__poster' || evt.target.className === 'film-card__comments'){
       this._callback.click();
     }
+
+    // switch(evt.target.id){
+    //   case 'addToWatchlist':
+    //     this._addToWatchlist();
+    //     break;
+    //   case 'markAsWatched':
+    //     this._markAsWatched();
+    //     break;        
+    //   case 'markAsFavorite':
+    //     this._markAsFavorite();
+    //     break;}
+
+  }
+
+  _addToWatchlist(){
+    console.log('_addToWatchlist');
+  }
+
+  _markAsWatched(){
+    console.log('_markAsWatched');
+  }
+
+  _markAsFavorite(){
+    console.log('_markAsFavorite');
+  }
+
+  _watchlistClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchListClick();
   }
 
   setClickHandler(callback) {
     this._callback.click = callback;
     this.getElement().addEventListener('click', this._clickHandler);
   }
+
+  setWatchlistClickHandler(callback) {
+    this._callback.watchListClick = callback;
+    
+    const watchlistButton = this.getElement().querySelector('.film-card__controls-item--add-to-watchlist');
+    if(watchlistButton !== null){
+      watchlistButton.addEventListener('click', this._watchlistClickHandler);
+    }
+  }
+
 }

@@ -23,13 +23,3 @@ export const getTopRat = (filmsArray, cntTop) => {
     .slice(-cntTop);
 };
 
-export const viewFilmDetails = (element) => {
-  document.body.appendChild(element);
-  document.body.classList.add('hide-overflow');
-};
-
-export const hideFilmDetails = (element) => {
-  document.body.removeChild(element);
-  document.body.classList.remove('hide-overflow');
-};
-
