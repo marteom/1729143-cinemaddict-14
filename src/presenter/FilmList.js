@@ -9,6 +9,7 @@ import FilmsListExtraCaptionView from '../view/films-list-extra-caption';
 import FilmsListEmptyView from '../view/films-list-empty';
 import { EXTRA_CAPTIONS } from '../utils/const';
 import { getMostCommented, getTopRat } from '../utils/film';
+import {updateItem} from '../utils/common.js';
 import { remove, RenderPosition, renderElement } from '../utils/render';
 import Film from './Film';
 
@@ -19,6 +20,7 @@ const FILM_EXTRA_COUNT = 2;
 export default class FilmList{
   constructor(siteMainElement){
     this._siteMainElement = siteMainElement;
+    this._filmPresenter = {};
     this._sortContentViewComponent = new SortContentView();
     this._filmsViewComponent = new FilmsView();
     this._filmsListViewComponent = new FilmsListView();
@@ -28,14 +30,15 @@ export default class FilmList{
     this._showMoViewComponent = new ShowMoView();
     this._filmsListExtraViewComponent = new FilmsListExtraView();
     this._filmsListExtraCaptionViewComponent = new FilmsListExtraCaptionView();
-    
+    this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleShowMoButtonClick = this._handleShowMoButtonClick.bind(this);
 
   }
 
   _renderFilmCard(filmsListContainer, film){
-    const filmCard = new Film(filmsListContainer);
+    const filmCard = new Film(filmsListContainer, this._handleFilmChange);
     filmCard.init(film);
+    this._filmPresenter[film.id] = filmCard;
   };
 
   _renderFilmsList(){
@@ -110,6 +113,20 @@ export default class FilmList{
 
   _renderEmptyData(){
     renderElement(this._filmsListViewComponent , this._filmsListEmptyViewComponent, RenderPosition.BEFOREEND);
+  }
+
+  _clearFilmsList() {
+    Object
+      .values(this._filmPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._filmPresenter = {};
+    film_count_showed = FILM_COUNT_PER_STEP;
+    remove(this._showMoViewComponent);
+  }
+
+  _handleFilmChange(updatedFilm) {
+    this._films = updateItem(this._boardTasks, updatedFilm);
+    this._filmPresenter[updatedFilm.id].init(updatedFilm);
   }
 
   init(films){

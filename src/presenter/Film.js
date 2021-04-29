@@ -1,10 +1,10 @@
 import FilmCardView from '../view/film-card';
 import FilmDetailsView from '../view/film-details';
-import { renderElement, RenderPosition } from '../utils/render';
+import { renderElement, RenderPosition, remove } from '../utils/render';
 export default class Film{
-  constructor(filmsListContainer){
+  constructor(filmsListContainer, changeData){
     this._filmsListContainer = filmsListContainer;
-
+    this._changeData = changeData;
     this._handleFilmCardClick = this._handleFilmCardClick.bind(this);
     this._handleFilmCardCloseClick = this._handleFilmCardCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
@@ -16,25 +16,62 @@ export default class Film{
 
   init(film){
     this._film = film;
-    const filmCardViewComponent = new FilmCardView(film);
-    filmCardViewComponent.setClickHandler(this._handleFilmCardClick);
-    filmCardViewComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
-    filmCardViewComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
-    filmCardViewComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
 
-    renderElement(this._filmsListContainer, filmCardViewComponent, RenderPosition.BEFOREEND);
+    const prevFilmCardComponent = this._filmCardViewComponent;
+
+    this._filmCardViewComponent = new FilmCardView(film);
+    this._filmCardViewComponent.setClickHandler(this._handleFilmCardClick);
+    this._filmCardViewComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
+    this._filmCardViewComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
+    this._filmCardViewComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
+
+    if (prevFilmCardComponent === null || prevFilmCardComponent === undefined) {
+      renderElement(this._filmsListContainer, this._filmCardViewComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    if (this._filmsListContainer.getElement().contains(prevFilmCardComponent.getElement())) {
+      replace(this._filmCardViewComponent, prevFilmCardComponent);
+    }
+
+    remove(prevFilmCardComponent);
+
   }
 
   _handleWatchListFilmCardClick() {
-    console.log('_handleWatchListFilmCardClick');
+    this._changeData(
+      Object.assign(
+        {},
+        this._film,
+        {
+          isWatchList: !this._film.isWatchList,
+        },
+      ),
+    );
   }
 
   _handleWatchedFilmCardClick(){
-    console.log('_handleWatchedFilmCardClick');
+    this._changeData(
+      Object.assign(
+        {},
+        this._film,
+        {
+          isWatched: !this._film.isWatched,
+        },
+      ),
+    );    
   }
 
   _handleFavouriteFilmCardClick(){
-    console.log('_handleFavouriteFilmCardClick');
+    this._changeData(
+      Object.assign(
+        {},
+        this._film,
+        {
+          isFavorite: !this._film.isFavorite,
+        },
+      ),
+    );
   }
 
   _updateFilms(){
@@ -42,12 +79,12 @@ export default class Film{
   }
 
   _handleFilmCardClick() {
-    this._filmDetails = new FilmDetailsView(this._film);
-    this._filmDetails.setClickHandler(this._handleFilmCardCloseClick);
+    this._filmDetailsComponent = new FilmDetailsView(this._film);
+    this._filmDetailsComponent.setClickHandler(this._handleFilmCardCloseClick);
 
-    this._filmDetails.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
-    this._filmDetails.setWatchedClickHandler(this._handleWatchedFilmCardClick);
-    this._filmDetails.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
+    this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
+    this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
+    this._filmDetailsComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
     
     this._viewFilmDetails();
   }
@@ -64,15 +101,20 @@ export default class Film{
   }
 
   _viewFilmDetails() {
-    document.body.appendChild(this._filmDetails.getElement());
+    document.body.appendChild(this._filmDetailsComponent.getElement());
     document.body.classList.add('hide-overflow');
     document.addEventListener('keydown', this._handleEscKeyDown);
   };
   
   _hideFilmDetails() {
-    document.body.removeChild(this._filmDetails.getElement());
+    document.body.removeChild(this._filmDetailsComponent.getElement());
     document.body.classList.remove('hide-overflow');
     document.removeEventListener('keydown', this._handleEscKeyDown);
   };
+
+  destroy(){
+    remove(this._filmCardViewComponent);
+    remove(this._filmDetailsComponent);
+  }
 
 }
