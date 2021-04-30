@@ -144,29 +144,27 @@ export default class FilmDetails extends AbstractView {
 
   _clickHandler(evt) {
     evt.preventDefault();
-    if(evt.target.className === 'film-details__close-btn'){
-      this._callback.click();
-    }
+    this._callback.click();
   }
 
-  _watchlistClickHandler(evt) {
-    evt.preventDefault();
+  _watchlistClickHandler() {
     this._callback.watchListClick();
   }
 
-  _watchedClickHandler(evt){
-    evt.preventDefault();
+  _watchedClickHandler(){
     this._callback.watchedClick();
   }
 
-  _favouriteClickHandler(evt){
-    evt.preventDefault();
-    this._callback.favouriteClick(); 
+  _favouriteClickHandler(){
+    this._callback.favouriteClick();
   }
 
   setClickHandler(callback) {
     this._callback.click = callback;
-    this.getElement().addEventListener('click', this._clickHandler);
+    const clickCloseBtn = this.getElement().querySelector('.film-details__close-btn');
+    if(clickCloseBtn !== null){
+      clickCloseBtn.addEventListener('click', this._clickHandler);
+    }
   }
 
   setWatchlistClickHandler(callback) {

@@ -2,7 +2,7 @@ import ProfileView from './view/profile';
 import SiteMenuView from './view/site-menu';
 import FooterStatisticView from './view/footer-statistic';
 import { RenderPosition, renderElement } from './utils/render';
-import FilmList from './presenter/FilmList';
+import FilmList from './presenter/film-list';
 
 import { generateFilm } from './mock/film';
 import { generateItem } from './mock/menu';
@@ -18,7 +18,7 @@ renderElement(siteHeaderElement, new ProfileView('Movie Buff'), RenderPosition.B
 renderElement(siteMainElement, new SiteMenuView(menuItems), RenderPosition.BEFOREEND);
 
 
-let filmList = new FilmList(siteMainElement);
+const filmList = new FilmList(siteMainElement);
 filmList.init(films);
 
 const siteFooterElement = document.querySelector('.footer');
