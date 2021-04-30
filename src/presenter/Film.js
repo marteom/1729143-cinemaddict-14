@@ -1,6 +1,6 @@
 import FilmCardView from '../view/film-card';
 import FilmDetailsView from '../view/film-details';
-import { renderElement, RenderPosition, remove } from '../utils/render';
+import { renderElement, RenderPosition, remove, replace } from '../utils/render';
 export default class Film{
   constructor(filmsListContainer, changeData){
     this._filmsListContainer = filmsListContainer;
@@ -74,19 +74,29 @@ export default class Film{
     );
   }
 
-  _updateFilms(){
-
-  }
-
   _handleFilmCardClick() {
+    const prevFilmDetailsComponent = this._filmDetailsComponent;
     this._filmDetailsComponent = new FilmDetailsView(this._film);
-    this._filmDetailsComponent.setClickHandler(this._handleFilmCardCloseClick);
 
+    this._filmDetailsComponent.setClickHandler(this._handleFilmCardCloseClick);
     this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
     this._filmDetailsComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
     
-    this._viewFilmDetails();
+
+    if (prevFilmDetailsComponent === null || prevFilmDetailsComponent === undefined) {
+      this._viewFilmDetails();
+      return;
+    }
+
+    if (document.body.contains(prevFilmDetailsComponent.getElement())) {
+      console.log('wwwwww');
+      replace(this._filmDetailsComponent, prevFilmDetailsComponent); //!!!!!!!!!!!!!
+    }
+    
+    remove(prevFilmDetailsComponent);
+
+    // this._viewFilmDetails();
   }
 
   _handleFilmCardCloseClick() {
@@ -101,7 +111,9 @@ export default class Film{
   }
 
   _viewFilmDetails() {
+    //console.log('1: ', this._filmDetailsComponent.getElement(), document.body.contains(this._filmDetailsComponent.getElement()));
     document.body.appendChild(this._filmDetailsComponent.getElement());
+    //console.log('2: ', this._filmDetailsComponent.getElement(), document.body.contains(this._filmDetailsComponent.getElement()));
     document.body.classList.add('hide-overflow');
     document.addEventListener('keydown', this._handleEscKeyDown);
   };

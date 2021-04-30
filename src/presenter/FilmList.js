@@ -125,7 +125,7 @@ export default class FilmList{
   }
 
   _handleFilmChange(updatedFilm) {
-    this._films = updateItem(this._boardTasks, updatedFilm);
+    this._films = updateItem(this._films, updatedFilm);
     this._filmPresenter[updatedFilm.id].init(updatedFilm);
   }
 
