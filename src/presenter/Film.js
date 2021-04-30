@@ -48,6 +48,10 @@ export default class Film{
         },
       ),
     );
+
+    // if(document.getElementById('watchlist') !== null){
+    //   document.getElementById('watchlist').checked = !document.getElementById('watchlist').checked;
+    // }
   }
 
   _handleWatchedFilmCardClick(){
@@ -75,28 +79,14 @@ export default class Film{
   }
 
   _handleFilmCardClick() {
-    const prevFilmDetailsComponent = this._filmDetailsComponent;
     this._filmDetailsComponent = new FilmDetailsView(this._film);
 
     this._filmDetailsComponent.setClickHandler(this._handleFilmCardCloseClick);
     this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
     this._filmDetailsComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
-    
 
-    if (prevFilmDetailsComponent === null || prevFilmDetailsComponent === undefined) {
-      this._viewFilmDetails();
-      return;
-    }
-
-    if (document.body.contains(prevFilmDetailsComponent.getElement())) {
-      console.log('wwwwww');
-      replace(this._filmDetailsComponent, prevFilmDetailsComponent); //!!!!!!!!!!!!!
-    }
-    
-    remove(prevFilmDetailsComponent);
-
-    // this._viewFilmDetails();
+    this._viewFilmDetails();
   }
 
   _handleFilmCardCloseClick() {
@@ -111,9 +101,7 @@ export default class Film{
   }
 
   _viewFilmDetails() {
-    //console.log('1: ', this._filmDetailsComponent.getElement(), document.body.contains(this._filmDetailsComponent.getElement()));
     document.body.appendChild(this._filmDetailsComponent.getElement());
-    //console.log('2: ', this._filmDetailsComponent.getElement(), document.body.contains(this._filmDetailsComponent.getElement()));
     document.body.classList.add('hide-overflow');
     document.addEventListener('keydown', this._handleEscKeyDown);
   };
