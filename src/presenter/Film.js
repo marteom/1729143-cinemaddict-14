@@ -15,9 +15,7 @@ export default class Film{
     this._handleFilmCardClick = this._handleFilmCardClick.bind(this);
     this._handleFilmCardCloseClick = this._handleFilmCardCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
-
     this._mode = Mode.DEFAULT;
-
     this._handleWatchListFilmCardClick = this._handleWatchListFilmCardClick.bind(this);
     this._handleWatchedFilmCardClick = this._handleWatchedFilmCardClick.bind(this);
     this._handleFavouriteFilmCardClick = this._handleFavouriteFilmCardClick.bind(this);
