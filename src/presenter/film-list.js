@@ -3,7 +3,7 @@ import FilmsView from '../view/films';
 import FilmsListView from '../view/films-list';
 import FilmsListCaptionView from '../view/films-list-caption';
 import FilmsListContainerView from '../view/films-list-container';
-import ShowMoView from '../view/showmo-element';
+import ShowMoreView from '../view/showmore-element';
 import FilmsListExtraView from '../view/films-list-extra';
 import FilmsListExtraCaptionView from '../view/films-list-extra-caption';
 import FilmsListEmptyView from '../view/films-list-empty';
@@ -28,11 +28,11 @@ export default class FilmList {
     this._filmsListEmptyViewComponent = new FilmsListEmptyView();
     this._filmsListCaptionViewComponent = new FilmsListCaptionView();
     this._filmsListContainerViewComponent = new FilmsListContainerView();
-    this._showMoViewComponent = new ShowMoView();
+    this._showMoreViewComponent = new ShowMoreView();
     this._filmsListExtraViewComponent = new FilmsListExtraView();
     this._filmsListExtraCaptionViewComponent = new FilmsListExtraCaptionView();
     this._handleFilmChange = this._handleFilmChange.bind(this);
-    this._handleShowMoButtonClick = this._handleShowMoButtonClick.bind(this);
+    this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
@@ -76,7 +76,7 @@ export default class FilmList {
     }
 
     if (this._films.length > FILM_COUNT_PER_STEP) {
-      this._renderShowMoButton();
+      this._renderShowMoreButton();
     }
 
   }
@@ -111,7 +111,7 @@ export default class FilmList {
     );
   }
 
-  _handleShowMoButtonClick() {
+  _handleShowMoreButtonClick() {
     this._films
       .slice(film_count_showed, film_count_showed + FILM_COUNT_PER_STEP)
       .forEach((film) => {
@@ -121,17 +121,17 @@ export default class FilmList {
     film_count_showed += FILM_COUNT_PER_STEP;
 
     if (film_count_showed >= this._films.length) {
-      remove(this._showMoViewComponent);
+      remove(this._showMoreViewComponent);
     }
   }
 
-  _renderShowMoButton() {
+  _renderShowMoreButton() {
     renderElement(
       this._filmsListViewComponent,
       this._showMoViewComponent,
       RenderPosition.BEFOREEND,
     );
-    this._showMoViewComponent.setClickHandler(this._handleShowMoButtonClick);
+    this._showMoreViewComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
 
   _renderEmptyData() {
@@ -157,7 +157,7 @@ export default class FilmList {
     );
     this._filmPresenter = {};
     film_count_showed = FILM_COUNT_PER_STEP;
-    remove(this._showMoViewComponent);
+    remove(this._reViewComponent);
   }
 
   _handleFilmChange(updatedFilm) {

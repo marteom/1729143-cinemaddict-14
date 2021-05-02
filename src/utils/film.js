@@ -25,7 +25,7 @@ export const getTopRat = (filmsArray, cntTop) => {
 };
 
 export const sortFilmsByDate = (FilmA, FilmB) => {
-  return dayjs(FilmB.releaseDate).diff(dayjs(FilmA.releaseDate));
+  return dayjs(FilmB.releaseDate) - dayjs(FilmA.releaseDate);
 };
 
 export const sortFilmsByRating = (FilmA, FilmB) => {
