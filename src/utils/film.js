@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { getRandomInteger } from './common';
 
 export const generateValue = (inputArr) => {
@@ -23,13 +24,11 @@ export const getTopRat = (filmsArray, cntTop) => {
     .slice(-cntTop);
 };
 
-export const viewFilmDetails = (element) => {
-  document.body.appendChild(element);
-  document.body.classList.add('hide-overflow');
+export const sortFilmsByDate = (FilmA, FilmB) => {
+  return dayjs(FilmB.releaseDate) - dayjs(FilmA.releaseDate);
 };
 
-export const hideFilmDetails = (element) => {
-  document.body.removeChild(element);
-  document.body.classList.remove('hide-overflow');
+export const sortFilmsByRating = (FilmA, FilmB) => {
+  return parseFloat(FilmB.raiting) - parseFloat(FilmA.raiting);
 };
 

@@ -2,6 +2,7 @@ import { generateValue, generateDescription } from '../utils/film';
 import { getRandomInteger, getFalseOrTrue } from '../utils/common';
 import { GENRES } from '../utils/const';
 import { generateComment } from './comment';
+import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
 
 const descriptions = [
@@ -64,6 +65,7 @@ const countries = [
 
 export const generateFilm = () => {
   return {
+    id: nanoid(),
     title: generateValue(titles),
     poster: generateValue(posters),
     country: generateValue(countries),

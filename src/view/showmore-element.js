@@ -1,10 +1,10 @@
 import AbstractView from './abstract.js';
 
-const createShowMoTemplate = () => {
+const createShowMoreTemplate = () => {
   return '<button class="films-list__show-more">Show more</button>';
 };
 
-export default class ShowMo extends AbstractView {
+export default class ShowMore extends AbstractView {
 
   constructor() {
     super();
@@ -12,7 +12,7 @@ export default class ShowMo extends AbstractView {
   }
 
   getTemplate() {
-    return createShowMoTemplate();
+    return createShowMoreTemplate();
   }
 
   _clickHandler(evt) {

@@ -17,3 +17,9 @@ export const EMOTIONS = [
   'sleeping',
   'smile',
 ];
+
+export const SORT_TYPE = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
+};
