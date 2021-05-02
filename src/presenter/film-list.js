@@ -128,7 +128,7 @@ export default class FilmList {
   _renderShowMoreButton() {
     renderElement(
       this._filmsListViewComponent,
-      this._showMoViewComponent,
+      this._showMoreViewComponent,
       RenderPosition.BEFOREEND,
     );
     this._showMoreViewComponent.setClickHandler(this._handleShowMoreButtonClick);
@@ -157,7 +157,7 @@ export default class FilmList {
     );
     this._filmPresenter = {};
     film_count_showed = FILM_COUNT_PER_STEP;
-    remove(this._reViewComponent);
+    remove(this._showMoreViewComponent);
   }
 
   _handleFilmChange(updatedFilm) {
