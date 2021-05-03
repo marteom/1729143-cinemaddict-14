@@ -8,7 +8,6 @@ const createFilmDetailsTemplate = (film = {}) => {
     country = '',
     description = '',
     raiting = '',
-    //bornYear = '',
     duration = '',
     genres = [],
     isWatchList = false,
