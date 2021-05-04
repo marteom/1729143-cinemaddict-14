@@ -79,13 +79,17 @@ export default class Film{
     );
   }
 
+  _handleCommentEmojiClick(){
+    // тут обновление конкретной карточки (кол-во комментариев) ????
+  }
+
   _handleFilmCardClick() {
     this._filmDetailsComponent = new FilmDetailsView(this._film);
     this._filmDetailsComponent.setClickHandler(this._handleFilmCardCloseClick);
     this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
     this._filmDetailsComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
-
+    this._filmDetailsComponent.setCommentEmojiClickHandler(this._handleCommentEmojiClick);
     this._viewFilmDetails(true);
   }
 
