@@ -80,7 +80,6 @@ export default class Film{
   }
 
   _handleCommentEmojiClick(){
-    // тут обновление конкретной карточки (кол-во комментариев) ????
   }
 
   _handleFilmCardClick() {

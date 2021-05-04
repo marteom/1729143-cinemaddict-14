@@ -19,7 +19,7 @@ const createFilmDetailsTemplate = (film = {}) => {
     writers = [],
     actors = [],
     releaseDate = '',
-    newCommentEmoji = ''
+    newCommentEmoji = '',
   } = film;
 
   const getGenres = (genres) => {
@@ -35,7 +35,7 @@ const createFilmDetailsTemplate = (film = {}) => {
     else{
       return '';
     }
-  }
+  };
 
   return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -139,7 +139,7 @@ const createFilmDetailsTemplate = (film = {}) => {
 export default class FilmDetails extends SmartView {
   constructor(film) {
     super();
-    this._film = film;
+    this._data = film;
     this._element = null;
     this._clickHandler = this._clickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
@@ -149,7 +149,7 @@ export default class FilmDetails extends SmartView {
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._film);
+    return createFilmDetailsTemplate(this._data);
   }
 
   _clickHandler(evt) {
@@ -158,14 +158,41 @@ export default class FilmDetails extends SmartView {
   }
 
   _watchlistClickHandler() {
+    this.updateData(
+      Object.assign(
+        {},
+        this._data,
+        {
+          isWatchList: !this._data.isWatchList,
+        },
+      ), true,
+    );
     this._callback.watchListClick();
   }
 
   _watchedClickHandler() {
+    this.updateData(
+      Object.assign(
+        {},
+        this._data,
+        {
+          isWatched: !this._data.isWatched,
+        },
+      ), true,
+    );
     this._callback.watchedClick();
   }
 
   _favouriteClickHandler() {
+    this.updateData(
+      Object.assign(
+        {},
+        this._data,
+        {
+          isFavorite: !this._data.isFavorite,
+        },
+      ), true,
+    );
     this._callback.favouriteClick();
   }
 
@@ -175,11 +202,11 @@ export default class FilmDetails extends SmartView {
       this.updateData(
         Object.assign(
           {},
-          this._film,
+          this._data,
           {
-            newCommentEmoji: evt.target.src
+            newCommentEmoji: evt.target.src,
           },
-        ), false
+        ), false,
       );
       const hiddenInputId = evt.target.parentElement.attributes['for'];
       const hiddenInput = document.getElementById(hiddenInputId.value);
@@ -242,5 +269,17 @@ export default class FilmDetails extends SmartView {
     this.getElement()
       .querySelector('.film-details__emoji-list')
       .addEventListener('click', this._commentEmojiClickHandler);
+
+    this.getElement()
+      .querySelector('.film-details__control-label--favorite')
+      .addEventListener('click', this._favouriteClickHandler);
+
+    this.getElement()
+      .querySelector('.film-details__control-label--watched')
+      .addEventListener('click', this._watchedClickHandler);
+
+    this.getElement()
+      .querySelector('.film-details__control-label--watchlist')
+      .addEventListener('click', this._watchlistClickHandler);
   }
 }
