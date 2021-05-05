@@ -3,7 +3,6 @@ import { getRandomInteger, getFalseOrTrue } from '../utils/common';
 import { GENRES } from '../utils/const';
 import { generateComment } from './comment';
 import { nanoid } from 'nanoid';
-import dayjs from 'dayjs';
 
 const descriptions = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -82,6 +81,6 @@ export const generateFilm = () => {
     director: generateValue(directors),
     writers: Array(getRandomInteger(1,3)).fill().map(() => generateValue(directors)),
     actors: Array(getRandomInteger(1,5)).fill().map(() => generateValue(actors)),
-    releaseDate: dayjs(`${getRandomInteger(1985,2021)}, ${getRandomInteger(1,12)}, ${getRandomInteger(1,25)}`).format('DD MMMM YYYY'),
+    releaseDate: `${getRandomInteger(1985,2021)}-${getRandomInteger(10,12)}-${getRandomInteger(10,25)}T00:00:00.000Z`,
   };
 };
