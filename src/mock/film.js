@@ -72,7 +72,7 @@ export const generateFilm = () => {
     description: generateDescription(descriptions),
     raiting: `${getRandomInteger(1, 9)}.${getRandomInteger(1, 9)}`,
     bornYear: getRandomInteger(1930, 2000),
-    duration: `${getRandomInteger(1, 3)}h.${getRandomInteger(1, 59)}m`,
+    duration: getRandomInteger(15, 200),
     genres: Array(getRandomInteger(1,3)).fill().map(() => generateValue(GENRES)),
     isWatchList: getFalseOrTrue(),
     isWatched: getFalseOrTrue(),

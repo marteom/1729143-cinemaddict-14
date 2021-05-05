@@ -1,4 +1,5 @@
 import { createFilmCommentsTemplate } from './film-comments';
+import { getHumanizeDuration } from '../utils/film';
 import SmartView from './smart.js';
 
 const createFilmDetailsTemplate = (film = {}) => {
@@ -77,7 +78,7 @@ const createFilmDetailsTemplate = (film = {}) => {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>
-                <td class="film-details__cell">${duration}</td>
+                <td class="film-details__cell">${getHumanizeDuration(duration)}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Country</td>

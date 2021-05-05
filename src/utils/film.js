@@ -1,5 +1,11 @@
 import dayjs from 'dayjs';
+import objectSupport from 'dayjs/plugin/objectSupport';
 import { getRandomInteger } from './common';
+
+export const getHumanizeDuration = (duration) => {
+  dayjs.extend(objectSupport);
+  return dayjs({ minute: duration }).format('H[h] m[m]');
+};
 
 export const generateValue = (inputArr) => {
   const randomIndex = getRandomInteger(0, inputArr.length - 1);
