@@ -85,7 +85,6 @@ export default class Film{
     this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
     this._filmDetailsComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
-
     this._viewFilmDetails(true);
   }
 
