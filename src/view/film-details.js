@@ -146,6 +146,7 @@ export default class FilmDetails extends SmartView {
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._favouriteClickHandler = this._favouriteClickHandler.bind(this);
     this._commentEmojiClickHandler = this._commentEmojiClickHandler.bind(this);
+    this.setCommentEmojiClickHandler();
   }
 
   getTemplate() {
@@ -217,8 +218,6 @@ export default class FilmDetails extends SmartView {
     if(newCommentEmoji !== null){
       newCommentEmoji.scrollIntoView();
     }
-
-    //this._callback.commentEmojiClick();
   }
 
   setClickHandler(callback) {
@@ -262,24 +261,10 @@ export default class FilmDetails extends SmartView {
   }
 
   restoreHandlers() {
-    this.getElement()
-      .querySelector('.film-details__close-btn')
-      .addEventListener('click', this._clickHandler);
-
-    this.getElement()
-      .querySelector('.film-details__emoji-list')
-      .addEventListener('click', this._commentEmojiClickHandler);
-
-    this.getElement()
-      .querySelector('.film-details__control-label--favorite')
-      .addEventListener('click', this._favouriteClickHandler);
-
-    this.getElement()
-      .querySelector('.film-details__control-label--watched')
-      .addEventListener('click', this._watchedClickHandler);
-
-    this.getElement()
-      .querySelector('.film-details__control-label--watchlist')
-      .addEventListener('click', this._watchlistClickHandler);
+    this.setClickHandler(this._callback.click);
+    this.setWatchlistClickHandler(this._callback.watchListClick);
+    this.setWatchedClickHandler(this._callback.watchedClick);
+    this.setFavouriteClickHandler(this._callback.favouriteClick);
+    this.setCommentEmojiClickHandler(this._callback.commentEmojiClick);
   }
 }
