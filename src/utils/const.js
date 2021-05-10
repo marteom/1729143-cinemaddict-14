@@ -23,3 +23,10 @@ export const SORT_TYPE = {
   DATE: 'date',
   RATING: 'rating',
 };
+
+export const MENU_ITEMS = {
+  ALL: 'All movies',
+  WATCHLIST: 'Watchlist',
+  HISTORY: 'History',
+  FAVORITES: 'Favorites',
+};
