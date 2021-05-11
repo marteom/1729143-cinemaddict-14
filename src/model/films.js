@@ -14,7 +14,7 @@ export default class Films extends Observer {
     return this._films;
   }
 
-  updateFilm(update) { //  updateFilm(updateType, update) {
+  updateFilm(updateType, update) {
     const index = this._films.findIndex((film) => film.id === update.id);
 
     if (index === -1) {
@@ -27,7 +27,7 @@ export default class Films extends Observer {
       ...this._films.slice(index + 1),
     ];
 
-    this._notify(update);
+    this._notify(updateType, update);
   }
 
 }

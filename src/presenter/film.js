@@ -1,6 +1,7 @@
 import FilmCardView from '../view/film-card';
 import FilmDetailsView from '../view/film-details';
 import { renderElement, RenderPosition, remove, replace } from '../utils/render';
+import { UPDATE_TYPE } from '../utils/const';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -45,6 +46,7 @@ export default class Film{
 
   _handleWatchListFilmCardClick() {
     this._changeData(
+      this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
       Object.assign(
         {},
         this._film,
@@ -57,6 +59,7 @@ export default class Film{
 
   _handleWatchedFilmCardClick(){
     this._changeData(
+      this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
       Object.assign(
         {},
         this._film,
@@ -69,6 +72,7 @@ export default class Film{
 
   _handleFavouriteFilmCardClick(){
     this._changeData(
+      this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
       Object.assign(
         {},
         this._film,

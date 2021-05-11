@@ -30,3 +30,9 @@ export const MENU_ITEMS = {
   HISTORY: 'History',
   FAVORITES: 'Favorites',
 };
+
+export const UPDATE_TYPE = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};

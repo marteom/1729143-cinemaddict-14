@@ -7,10 +7,9 @@ export default class Menus extends Observer {
     this._activeMenuItem = MENU_ITEMS.ALL;
   }
 
-  setMenuItem(menuItem) {
-    console.log('setMenuItem');
+  setMenuItem(updateType, menuItem) {
     this._activeMenuItem = menuItem;
-    this._notify(menuItem);
+    this._notify(updateType, menuItem);
   }
 
   getMenuItem() {

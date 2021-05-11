@@ -10,7 +10,7 @@ import FilmsListEmptyView from '../view/films-list-empty';
 import { sortFilmsByDate, sortFilmsByRating } from '../utils/film';
 import { remove, RenderPosition, renderElement } from '../utils/render';
 import Film from './film';
-import { SORT_TYPE } from '../utils/const';
+import { SORT_TYPE, UPDATE_TYPE } from '../utils/const';
 import { menuItems } from '../utils/site-menu';
 
 const FILM_COUNT_PER_STEP = 5;
@@ -56,6 +56,9 @@ export default class FilmList {
       this._renderEmptyData();
       return;
     }
+    else {
+      remove(this._filmsListEmptyViewComponent);
+    }
 
     renderElement(
       this._filmsListViewComponent,
@@ -70,7 +73,7 @@ export default class FilmList {
 
     this._renderSort();
 
-    for (let i = 0; i < FILM_COUNT_PER_STEP; i++) {
+    for (let i = 0; i < film_count_showed; i++) {
       if (films.length > i) {
         this._renderFilmCard(
           this._filmsListContainerViewComponent,
@@ -85,11 +88,11 @@ export default class FilmList {
 
   }
 
-  _handleSortTypeChange(SORT_TYPE) {
-    if (this._currentSortType === SORT_TYPE) {
+  _handleSortTypeChange(SortType) {
+    if (this._currentSortType === SortType) {
       return;
     }
-    this._sortFilms(SORT_TYPE);
+    this._sortFilms(SortType);
     this._clearFilmsList();
     this._renderFilmsList();
   }
@@ -122,23 +125,22 @@ export default class FilmList {
     return filtredFilms;
   }
 
-  _handleModelEvent() {
-    this._clearFilmsList();
-    this._renderFilmsList();
-    //this._filmPresenter[data.id].init(data);
-    // switch (updateType) {
-    //   case UpdateType.PATCH:
-    //     this._taskPresenter[data.id].init(data);
-    //     break;
-    //   case UpdateType.MINOR:
-    //     this._clearBoard();
-    //     this._renderBoard();
-    //     break;
-    //   case UpdateType.MAJOR:
-    //     this._clearBoard({resetRenderedTaskCount: true, resetSortType: true});
-    //     this._renderBoard();
-    //     break;
-    // }
+  _handleModelEvent(updateType, data) {
+    switch (updateType) {
+      case UPDATE_TYPE.PATCH:
+        this._filmPresenter[data.id].init(data);
+        break;
+      case UPDATE_TYPE.MINOR:
+        this._clearFilmsList();
+        this._renderFilmsList();
+        break;
+      case UPDATE_TYPE.MAJOR:
+        this._clearSort();
+        this._renderSort();
+        this._clearFilmsList(true);
+        this._renderFilmsList();
+        break;
+    }
   }
 
   _handleModelChange() {
@@ -189,18 +191,26 @@ export default class FilmList {
     this._sortContentViewComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
-  _clearFilmsList() {
-    Object.values(this._filmPresenter).forEach((presenter) =>
-      presenter.destroy(),
+  _clearSort(){
+    remove(this._sortContentViewComponent);
+    this._sortFilms(SORT_TYPE.DEFAULT);
+  }
+
+  _clearFilmsList(resetFilmsShowed = false) {
+    Object
+      .values(this._filmPresenter)
+      .forEach((presenter) => presenter.destroy(),
     );
     this._filmPresenter = {};
-    film_count_showed = FILM_COUNT_PER_STEP;
-     //this._currentSortType = SORT_TYPE.DEFAULT;
+
+    resetFilmsShowed ? film_count_showed = FILM_COUNT_PER_STEP : '';
+    
     remove(this._showMoreViewComponent);
   }
 
   destroy() {
-    this._clearFilmsList(); //({resetRenderedTaskCount: true, resetSortType: true});
+    console.log('destroy');
+    this._clearFilmsList(true);
 
     remove(this._filmsListViewComponent);
     remove(this._filmsViewComponent);
@@ -209,8 +219,8 @@ export default class FilmList {
     this._menusModel.removeObserver(this._handleModelEvent);
   }
 
-  _handleFilmChange(updatedFilm) {
-    this._filmsModel.updateFilm(updatedFilm);
+  _handleFilmChange(updateType, updatedFilm) {
+    this._filmsModel.updateFilm(updateType, updatedFilm);
   }
 
   init() {

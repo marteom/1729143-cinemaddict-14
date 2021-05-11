@@ -1,6 +1,6 @@
 import SiteMenuView from '../view/site-menu';
 import { RenderPosition, renderElement, remove, replace } from '../utils/render';
-import {MENU_ITEMS} from '../utils/const';
+import { MENU_ITEMS, UPDATE_TYPE } from '../utils/const';
 
 export default class SiteMenu {
   constructor(siteMainElement, menusModel, filmsModel) {
@@ -25,12 +25,11 @@ export default class SiteMenu {
   }
 
   _handleMenuItemChange(activeMenuItem) {
-    console.log('activeMenuItem: ', activeMenuItem);
     if (this._menusModel.getMenuItem() === activeMenuItem) {
       return;
     }
 
-    this._menusModel.setMenuItem(activeMenuItem);
+    this._menusModel.setMenuItem(UPDATE_TYPE.MAJOR, activeMenuItem);
   }
 
   _getMenus() {
