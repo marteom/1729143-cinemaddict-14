@@ -10,7 +10,7 @@ import FilmsListEmptyView from '../view/films-list-empty';
 import { sortFilmsByDate, sortFilmsByRating } from '../utils/film';
 import { remove, RenderPosition, renderElement } from '../utils/render';
 import Film from './film';
-import { SORT_TYPE, UPDATE_TYPE } from '../utils/const';
+import { SORT_TYPE, UPDATE_TYPE, USER_ACTION } from '../utils/const';
 import { menuItems } from '../utils/site-menu';
 
 const FILM_COUNT_PER_STEP = 5;
@@ -37,6 +37,7 @@ export default class FilmList {
     this._handleModelChange = this._handleModelChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
   }
 
   _renderFilmCard(filmsListContainer, film) {
@@ -125,6 +126,17 @@ export default class FilmList {
     return filtredFilms;
   }
 
+  _handleViewAction(actionType, updateType, update) {
+    switch (actionType) {
+      case USER_ACTION.ADD_COMMENT:
+        this._tasksModel.addTask(updateType, update);
+        break;
+      case USER_ACTION.DELETE_COMMENT:
+        this._tasksModel.deleteTask(updateType, update);
+        break;
+    }
+  }
+
   _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UPDATE_TYPE.PATCH:
@@ -209,7 +221,6 @@ export default class FilmList {
   }
 
   destroy() {
-    console.log('destroy');
     this._clearFilmsList(true);
 
     remove(this._filmsListViewComponent);

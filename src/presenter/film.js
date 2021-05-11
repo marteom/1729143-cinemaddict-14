@@ -20,6 +20,7 @@ export default class Film{
     this._handleWatchListFilmCardClick = this._handleWatchListFilmCardClick.bind(this);
     this._handleWatchedFilmCardClick = this._handleWatchedFilmCardClick.bind(this);
     this._handleFavouriteFilmCardClick = this._handleFavouriteFilmCardClick.bind(this);
+    this._handleCommentDeleteClick = this._handleCommentDeleteClick.bind(this);
   }
 
   init(film){
@@ -31,6 +32,8 @@ export default class Film{
     this._filmCardViewComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
     this._filmCardViewComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
     this._filmCardViewComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
+
+    //this._filmCardViewComponent.setCommentDeleteClickHandler(this._handleCommentDeleteClick);
 
     if (prevFilmCardComponent === null || prevFilmCardComponent === undefined) {
       renderElement(this._filmsListContainer, this._filmCardViewComponent, RenderPosition.BEFOREEND);
@@ -83,12 +86,30 @@ export default class Film{
     );
   }
 
+  _handleCommentDeleteClick() {
+    console.log('this._film: ', this.film);
+    // this._changeData(
+    //   this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
+    //   Object.assign(
+    //     {},
+    //     this._film,
+    //     {
+    //       comments: this._data.comments.filter( comment => comment.id != evt.target.dataset.id), //isFavorite: !this._film.isFavorite,
+    //     },
+    //   ),
+    // );
+  }
+
   _handleFilmCardClick() {
     this._filmDetailsComponent = new FilmDetailsView(this._film);
     this._filmDetailsComponent.setClickHandler(this._handleFilmCardCloseClick);
     this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
     this._filmDetailsComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
+    this._filmDetailsComponent.setCommentDeleteClickHandler(this._handleCommentDeleteClick);
+
+    //this._handleCommentDeleteClick = this._handleCommentDeleteClick.bind(this);
+
     this._viewFilmDetails(true);
   }
 

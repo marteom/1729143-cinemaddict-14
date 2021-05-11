@@ -147,6 +147,7 @@ export default class FilmDetails extends SmartView {
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._favouriteClickHandler = this._favouriteClickHandler.bind(this);
     this._commentEmojiClickHandler = this._commentEmojiClickHandler.bind(this);
+    this._commentDeleteClickHandler = this._commentDeleteClickHandler.bind(this);
     this.setCommentEmojiClickHandler();
   }
 
@@ -196,6 +197,22 @@ export default class FilmDetails extends SmartView {
       ), true,
     );
     this._callback.favouriteClick();
+  }
+
+  _commentDeleteClickHandler(evt) {
+    console.log('evt: ', evt.target.dataset.id);
+    console.log('this._data: ', this._data.comments);
+    evt.preventDefault();
+    this.updateData(
+      Object.assign(
+        {},
+        this._data,
+        {
+          comments: this._data.comments.filter( comment => comment.id != evt.target.dataset.id),
+        },
+      ), true,
+    );
+    this._callback.commentDeleteClick();
   }
 
   _commentEmojiClickHandler(evt) {
@@ -261,11 +278,20 @@ export default class FilmDetails extends SmartView {
     }
   }
 
+  setCommentDeleteClickHandler(callback) {
+    this._callback.commentDeleteClick = callback;
+    const deleteComments = this.getElement().querySelectorAll('.film-details__comment-delete');
+    if(deleteComments.length > 0){
+      deleteComments.forEach((deleteComment) => deleteComment.addEventListener('click', this._commentDeleteClickHandler));        
+      }
+  }
+
   restoreHandlers() {
     this.setClickHandler(this._callback.click);
     this.setWatchlistClickHandler(this._callback.watchListClick);
     this.setWatchedClickHandler(this._callback.watchedClick);
     this.setFavouriteClickHandler(this._callback.favouriteClick);
     this.setCommentEmojiClickHandler(this._callback.commentEmojiClick);
+    this.setCommentDeleteClickHandler(this._callback.commentDeleteClick);
   }
 }
