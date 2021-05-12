@@ -22,7 +22,7 @@ const comments = [
 export const generateComment = (commentEmotion, commentText) => {
   return {
     id: nanoid(),
-    emotion: generateValue(EMOTIONS),
+    emotion: commentEmotion !== undefined ? commentEmotion : generateValue(EMOTIONS),
     date: `${getRandomInteger(1985,2021)}-${getRandomInteger(10,12)}-${getRandomInteger(10,25)}T00:00:00.000Z`,
     autor: generateValue(autors),
     comment: commentEmotion !== undefined ? commentText : generateValue(comments),
