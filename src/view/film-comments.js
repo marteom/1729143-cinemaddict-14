@@ -1,4 +1,5 @@
 import { getHumanizeCommentDate } from '../utils/film';
+import he from 'he';
 
 const getComments = (comments) => {
   let commentsList = '';
@@ -8,7 +9,7 @@ const getComments = (comments) => {
         <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">
       </span>
       <div>
-        <p class="film-details__comment-text">${comment.comment}</p>
+        <p class="film-details__comment-text">${he.encode(comment.comment)}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${comment.autor}</span>
           <span class="film-details__comment-day">${getHumanizeCommentDate(comment.date)}</span>
@@ -21,7 +22,6 @@ const getComments = (comments) => {
 };
 
 export const createFilmCommentsTemplate = (comments) => {
-  console.log('comments: ',comments);
   return `
   <ul class="film-details__comments-list">
   ${getComments(comments)}

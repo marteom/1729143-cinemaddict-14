@@ -10,18 +10,17 @@ import FilmsListEmptyView from '../view/films-list-empty';
 import { sortFilmsByDate, sortFilmsByRating } from '../utils/film';
 import { remove, RenderPosition, renderElement } from '../utils/render';
 import Film from './film';
-import { SORT_TYPE, UPDATE_TYPE, USER_ACTION } from '../utils/const';
+import { SORT_TYPE, UPDATE_TYPE } from '../utils/const';
 import { menuItems } from '../utils/site-menu';
 
 const FILM_COUNT_PER_STEP = 5;
 let film_count_showed = FILM_COUNT_PER_STEP;
 
 export default class FilmList {
-  constructor(siteMainElement, filmsModel, menusModel, commentsModel) {
+  constructor(siteMainElement, filmsModel, menusModel) {
     this._siteMainElement = siteMainElement;
     this._filmsModel = filmsModel;
     this._menusModel = menusModel;
-    this._commentsModel = commentsModel;
     this._filmPresenter = {};
     this._currentSortType = SORT_TYPE.DEFAULT;
     this._sortContentViewComponent = new SortContentView();
@@ -38,7 +37,6 @@ export default class FilmList {
     this._handleModelChange = this._handleModelChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
-    //this._handleViewAction = this._handleViewAction.bind(this);
   }
 
   _renderFilmCard(filmsListContainer, film) {
@@ -46,7 +44,6 @@ export default class FilmList {
       filmsListContainer,
       this._handleFilmChange,
       this._handleModelChange,
-      //this._handleViewAction,
     );
     filmCard.init(film);
     this._filmPresenter[film.id] = filmCard;
@@ -128,21 +125,9 @@ export default class FilmList {
     return filtredFilms;
   }
 
-  // _handleViewAction(actionType, updateType, userComment) {
-  //   switch (actionType) {
-  //     // case USER_ACTION.ADD_COMMENT:
-  //     //   this._tasksModel.addTask(updateType, update);
-  //     //   break;
-  //     case USER_ACTION.DELETE_COMMENT:
-  //       this._filmsModel.updateFilm(updateType, userComment);
-  //       break;
-  //   }
-  // }
-
   _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UPDATE_TYPE.PATCH:
-        console.log('data: ', data);
         this._filmPresenter[data.id].init(data);
         break;
       case UPDATE_TYPE.MINOR:
@@ -215,11 +200,11 @@ export default class FilmList {
     Object
       .values(this._filmPresenter)
       .forEach((presenter) => presenter.destroy(),
-    );
+      );
     this._filmPresenter = {};
 
     resetFilmsShowed ? film_count_showed = FILM_COUNT_PER_STEP : '';
-    
+
     remove(this._showMoreViewComponent);
   }
 

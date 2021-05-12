@@ -1,6 +1,7 @@
 import { createFilmCommentsTemplate } from './film-comments';
 import { getHumanizeDuration, getHumanizeReleaseDate } from '../utils/film';
 import SmartView from './smart.js';
+import { generateComment } from '../mock/comment';
 
 const createFilmDetailsTemplate = (film = {}) => {
   const {
@@ -148,6 +149,7 @@ export default class FilmDetails extends SmartView {
     this._favouriteClickHandler = this._favouriteClickHandler.bind(this);
     this._commentEmojiClickHandler = this._commentEmojiClickHandler.bind(this);
     this._commentDeleteClickHandler = this._commentDeleteClickHandler.bind(this);
+    this._commentAddClickHandler = this._commentAddClickHandler.bind(this);
     this.setCommentEmojiClickHandler();
   }
 
@@ -160,49 +162,62 @@ export default class FilmDetails extends SmartView {
     this._callback.click();
   }
 
+  updateComments(data) {
+    this.updateData(
+      Object.assign(
+        {},
+        this._data,
+        {
+          comments: data,
+        },
+      ), false,
+    );
+  }
+
   _watchlistClickHandler() {
-    // this.updateData(
-    //   Object.assign(
-    //     {},
-    //     this._data,
-    //     {
-    //       isWatchList: !this._data.isWatchList,
-    //     },
-    //   ), true,
-    // );
     this._callback.watchListClick();
   }
 
   _watchedClickHandler() {
-    // this.updateData(
-    //   Object.assign(
-    //     {},
-    //     this._data,
-    //     {
-    //       isWatched: !this._data.isWatched,
-    //     },
-    //   ), true,
-    // );
     this._callback.watchedClick();
   }
 
   _favouriteClickHandler() {
-    // this.updateData(
-    //   Object.assign(
-    //     {},
-    //     this._data,
-    //     {
-    //       isFavorite: !this._data.isFavorite,
-    //     },
-    //   ), true,
-    // );
     this._callback.favouriteClick();
   }
 
   _commentDeleteClickHandler(evt) {
     evt.preventDefault();
-    //console.log('evt.target: ',evt.target.parentElement.parentElement);
     this._callback.commentDeleteClick(evt.target.dataset.id);
+  }
+
+  _commentAddClickHandler(evt){
+    if((evt.ctrlKey) && ((evt.key === 'Enter'))) {
+      evt.preventDefault();
+
+      const addCommentEmotion = document.querySelector('.film-details__add-emoji-label');
+      const addCommentText = this.getElement().querySelector('.film-details__comment-input');
+
+      if(addCommentEmotion.firstChild === null){
+        return;
+      }
+
+      if(addCommentText.value.trim() === '') {
+        return;
+      }
+
+      const addCommentObj = generateComment(addCommentEmotion.firstChild.src.split('\\').pop().split('/').pop().split('.')[0], addCommentText.value);
+      this._callback.commentAddClick(addCommentObj);
+    }
+
+    this._scrollToEmoji();
+  }
+
+  _scrollToEmoji(){
+    const newCommentEmoji = document.querySelector('.film-details__add-emoji-label');
+    if(newCommentEmoji !== null){
+      newCommentEmoji.scrollIntoView();
+    }
   }
 
   _commentEmojiClickHandler(evt) {
@@ -222,10 +237,7 @@ export default class FilmDetails extends SmartView {
       hiddenInput.checked = true;
     }
 
-    const newCommentEmoji = document.querySelector('.film-details__add-emoji-label');
-    if(newCommentEmoji !== null){
-      newCommentEmoji.scrollIntoView();
-    }
+    this._scrollToEmoji();
   }
 
   setClickHandler(callback) {
@@ -272,7 +284,15 @@ export default class FilmDetails extends SmartView {
     this._callback.commentDeleteClick = callback;
     const deleteComments = this.getElement().querySelectorAll('.film-details__comment-delete');
     if(deleteComments.length > 0){
-      deleteComments.forEach((deleteComment) => deleteComment.addEventListener('click', this._commentDeleteClickHandler));        
+      deleteComments.forEach((deleteComment) => deleteComment.addEventListener('click', this._commentDeleteClickHandler));
+    }
+  }
+
+  setCommentAddClickHandler(callback) {
+    this._callback.commentAddClick = callback;
+    const newCommentAdd = this.getElement().querySelector('.film-details__comment-input');
+    if(newCommentAdd !== null){
+      newCommentAdd.addEventListener('keypress', this._commentAddClickHandler);
     }
   }
 
@@ -283,5 +303,6 @@ export default class FilmDetails extends SmartView {
     this.setFavouriteClickHandler(this._callback.favouriteClick);
     this.setCommentEmojiClickHandler(this._callback.commentEmojiClick);
     this.setCommentDeleteClickHandler(this._callback.commentDeleteClick);
+    this.setCommentAddClickHandler(this._callback.commentAddClick);
   }
 }

@@ -37,7 +37,3 @@ export const UPDATE_TYPE = {
   MAJOR: 'MAJOR',
 };
 
-export const USER_ACTION = {
-  ADD_COMMENT: 'ADD_COMMENT',
-  DELETE_COMMENT: 'DELETE_COMMENT',
-};

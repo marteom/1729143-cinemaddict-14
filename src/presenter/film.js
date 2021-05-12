@@ -1,7 +1,7 @@
 import FilmCardView from '../view/film-card';
 import FilmDetailsView from '../view/film-details';
 import { renderElement, RenderPosition, remove, replace } from '../utils/render';
-import { UPDATE_TYPE, USER_ACTION } from '../utils/const';
+import { UPDATE_TYPE } from '../utils/const';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -9,11 +9,10 @@ const Mode = {
 };
 
 export default class Film{
-  constructor(filmsListContainer, changeData, changeMode /*, changeComments*/){
+  constructor(filmsListContainer, changeData, changeMode){
     this._filmsListContainer = filmsListContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
-    //this._changeComments = changeComments;
     this._handleFilmCardClick = this._handleFilmCardClick.bind(this);
     this._handleFilmCardCloseClick = this._handleFilmCardCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
@@ -22,6 +21,7 @@ export default class Film{
     this._handleWatchedFilmCardClick = this._handleWatchedFilmCardClick.bind(this);
     this._handleFavouriteFilmCardClick = this._handleFavouriteFilmCardClick.bind(this);
     this._handleCommentDeleteClick = this._handleCommentDeleteClick.bind(this);
+    this._handleCommentAddClick = this._handleCommentAddClick.bind(this);
   }
 
   init(film){
@@ -32,7 +32,6 @@ export default class Film{
     this._filmCardViewComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
     this._filmCardViewComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
     this._filmCardViewComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
-    //this._filmCardViewComponent.setCommentDeleteClickHandler(this._handleCommentDeleteClick);
 
     if (prevFilmCardComponent === null || prevFilmCardComponent === undefined) {
       renderElement(this._filmsListContainer, this._filmCardViewComponent, RenderPosition.BEFOREEND);
@@ -85,6 +84,25 @@ export default class Film{
     );
   }
 
+  _handleCommentAddClick(comment) {
+    const existingComments = this._film.comments;
+    existingComments.push(comment);
+    const newObject = Object.assign(
+      {},
+      this._film,
+      {
+        comments: existingComments,
+      },
+    );
+
+    this._changeData(
+      this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
+      newObject,
+    );
+
+    this._filmDetailsComponent.updateComments(newObject.comments);
+  }
+
   _handleCommentDeleteClick(id) {
     this._changeData(
       this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
@@ -92,24 +110,11 @@ export default class Film{
         {},
         this._film,
         {
-          comments: this._film.comments.filter( comment => comment.id != id),
+          comments: this._film.comments.filter( (comment) => comment.id != id),
         },
       ),
     );
-
-    // this._changeComments(
-    //   USER_ACTION.DELETE_COMMENT,
-    //   this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
-    //   this._film
-    //   // Object.assign(
-    //   //   {},
-    //   //   this._film,
-    //   //   {
-    //   //     comments: 'ccccc'//this._film.comments.filter( comment => comment.id != evt.target.dataset.id), //isFavorite: !this._film.isFavorite,
-    //   //   },
-    //   // ),
-    // );
-
+    this._filmDetailsComponent.updateComments(this._film.comments.filter( (comment) => comment.id != id));
   }
 
   _handleFilmCardClick() {
@@ -119,6 +124,7 @@ export default class Film{
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
     this._filmDetailsComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
     this._filmDetailsComponent.setCommentDeleteClickHandler(this._handleCommentDeleteClick);
+    this._filmDetailsComponent.setCommentAddClickHandler(this._handleCommentAddClick);
     this._viewFilmDetails(true);
   }
 

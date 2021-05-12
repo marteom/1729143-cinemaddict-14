@@ -5,7 +5,6 @@ import FilmListPresenter from './presenter/film-list';
 import SiteMenuPresenter from './presenter/site-menu';
 import FilmsModel from './model/films';
 import MenusModel from './model/menus';
-import CommentsModel from './model/comments';
 import { generateFilm } from './mock/film';
 
 const FILMS_COUNT = 15;
@@ -20,9 +19,8 @@ const filmsModel = new FilmsModel();
 filmsModel.setFilms(films);
 
 const menusModel = new MenusModel();
-const commentsModel = new CommentsModel();
 
-const filmList = new FilmListPresenter(siteMainElement, filmsModel, menusModel, commentsModel);
+const filmList = new FilmListPresenter(siteMainElement, filmsModel, menusModel);
 const siteMenu = new SiteMenuPresenter(siteMainElement, menusModel, filmsModel);
 
 siteMenu.init();

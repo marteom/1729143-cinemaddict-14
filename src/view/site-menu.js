@@ -37,8 +37,8 @@ export default class SiteMenu extends AbstractView {
   _activeMenuItemChangeHandler(evt) {
     evt.preventDefault();
     if(evt.target.className.trim() === 'main-navigation__item'){
-      const hrefMenu = evt.target.getAttribute("href");
-      let menuItem = hrefMenu.slice(1, hrefMenu.length);
+      const hrefMenu = evt.target.getAttribute('href');
+      const menuItem = hrefMenu.slice(1, hrefMenu.length);
       this._callback.activeMenuItemChange(menuItem);
     }
   }

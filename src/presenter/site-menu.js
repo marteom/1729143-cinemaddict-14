@@ -54,7 +54,7 @@ export default class SiteMenu {
         type: MENU_ITEMS.FAVORITES,
         name: 'Favorites',
         count: films.filter((film) => film.isFavorite).length,
-      },                  
+      },
     ];
   }
 
