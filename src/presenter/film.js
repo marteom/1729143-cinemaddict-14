@@ -1,7 +1,7 @@
 import FilmCardView from '../view/film-card';
 import FilmDetailsView from '../view/film-details';
 import { renderElement, RenderPosition, remove, replace } from '../utils/render';
-import { UPDATE_TYPE } from '../utils/const';
+import { UPDATE_TYPE, USER_ACTION } from '../utils/const';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -9,10 +9,11 @@ const Mode = {
 };
 
 export default class Film{
-  constructor(filmsListContainer, changeData, changeMode){
+  constructor(filmsListContainer, changeData, changeMode /*, changeComments*/){
     this._filmsListContainer = filmsListContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
+    //this._changeComments = changeComments;
     this._handleFilmCardClick = this._handleFilmCardClick.bind(this);
     this._handleFilmCardCloseClick = this._handleFilmCardCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
@@ -26,13 +27,11 @@ export default class Film{
   init(film){
     this._film = film;
     const prevFilmCardComponent = this._filmCardViewComponent;
-
     this._filmCardViewComponent = new FilmCardView(film);
     this._filmCardViewComponent.setClickHandler(this._handleFilmCardClick);
     this._filmCardViewComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
     this._filmCardViewComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
     this._filmCardViewComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
-
     //this._filmCardViewComponent.setCommentDeleteClickHandler(this._handleCommentDeleteClick);
 
     if (prevFilmCardComponent === null || prevFilmCardComponent === undefined) {
@@ -86,18 +85,31 @@ export default class Film{
     );
   }
 
-  _handleCommentDeleteClick() {
-    console.log('this._film: ', this.film);
-    // this._changeData(
+  _handleCommentDeleteClick(id) {
+    this._changeData(
+      this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
+      Object.assign(
+        {},
+        this._film,
+        {
+          comments: this._film.comments.filter( comment => comment.id != id),
+        },
+      ),
+    );
+
+    // this._changeComments(
+    //   USER_ACTION.DELETE_COMMENT,
     //   this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
-    //   Object.assign(
-    //     {},
-    //     this._film,
-    //     {
-    //       comments: this._data.comments.filter( comment => comment.id != evt.target.dataset.id), //isFavorite: !this._film.isFavorite,
-    //     },
-    //   ),
+    //   this._film
+    //   // Object.assign(
+    //   //   {},
+    //   //   this._film,
+    //   //   {
+    //   //     comments: 'ccccc'//this._film.comments.filter( comment => comment.id != evt.target.dataset.id), //isFavorite: !this._film.isFavorite,
+    //   //   },
+    //   // ),
     // );
+
   }
 
   _handleFilmCardClick() {
@@ -107,9 +119,6 @@ export default class Film{
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
     this._filmDetailsComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
     this._filmDetailsComponent.setCommentDeleteClickHandler(this._handleCommentDeleteClick);
-
-    //this._handleCommentDeleteClick = this._handleCommentDeleteClick.bind(this);
-
     this._viewFilmDetails(true);
   }
 

@@ -4,24 +4,31 @@ import { USER_ACTION } from '../utils/const';
 export default class Comments extends Observer {
   constructor() {
     super();
-    //this._activeMenuItem = MENU_ITEMS.ALL;
+    this._comments = [];
   }
 
-  // deleteComment(userAction, comment) {
-  //   //this._activeMenuItem = comment;
-  //   this._notify(userAction, comment);
-  // }
+  setComments(comments) {
+    this._comments = comments.slice();
+  }
 
-  deleteComments(userAction, userComment) {
+  getComments() {
+    return this._comments;
+  }
 
-    if(userAction === USER_ACTION.DELETE_COMMENT){
-      const index = this._films.comments.findIndex((comment) => comment.id === userComment.id);
+  updateComments(userAction, updateType, userComment) {
 
-      console.log('index: ', index);
+    console.log('userAction: ', userAction);
+    console.log('updateType: ', updateType);
+    console.log('userComment: ', userComment);
 
-      if (index === -1) {
-        throw new Error('Can\'t delete unexisting comment');
-      }
+    // if(userAction === USER_ACTION.DELETE_COMMENT){
+    //   const index = this._films.comments.findIndex((comment) => comment.id === userComment.id);
+
+    //   console.log('index: ', index);
+
+    //   if (index === -1) {
+    //     throw new Error('Can\'t delete unexisting comment');
+    //   }
 
       // this._films = [
       //   ...this._films.slice(0, index),
@@ -31,7 +38,7 @@ export default class Comments extends Observer {
 
       //this._notify(userAction, userComment);
 
-    }
+    //}
   }
 
 }

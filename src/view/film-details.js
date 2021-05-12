@@ -161,58 +161,48 @@ export default class FilmDetails extends SmartView {
   }
 
   _watchlistClickHandler() {
-    this.updateData(
-      Object.assign(
-        {},
-        this._data,
-        {
-          isWatchList: !this._data.isWatchList,
-        },
-      ), true,
-    );
+    // this.updateData(
+    //   Object.assign(
+    //     {},
+    //     this._data,
+    //     {
+    //       isWatchList: !this._data.isWatchList,
+    //     },
+    //   ), true,
+    // );
     this._callback.watchListClick();
   }
 
   _watchedClickHandler() {
-    this.updateData(
-      Object.assign(
-        {},
-        this._data,
-        {
-          isWatched: !this._data.isWatched,
-        },
-      ), true,
-    );
+    // this.updateData(
+    //   Object.assign(
+    //     {},
+    //     this._data,
+    //     {
+    //       isWatched: !this._data.isWatched,
+    //     },
+    //   ), true,
+    // );
     this._callback.watchedClick();
   }
 
   _favouriteClickHandler() {
-    this.updateData(
-      Object.assign(
-        {},
-        this._data,
-        {
-          isFavorite: !this._data.isFavorite,
-        },
-      ), true,
-    );
+    // this.updateData(
+    //   Object.assign(
+    //     {},
+    //     this._data,
+    //     {
+    //       isFavorite: !this._data.isFavorite,
+    //     },
+    //   ), true,
+    // );
     this._callback.favouriteClick();
   }
 
   _commentDeleteClickHandler(evt) {
-    console.log('evt: ', evt.target.dataset.id);
-    console.log('this._data: ', this._data.comments);
     evt.preventDefault();
-    this.updateData(
-      Object.assign(
-        {},
-        this._data,
-        {
-          comments: this._data.comments.filter( comment => comment.id != evt.target.dataset.id),
-        },
-      ), true,
-    );
-    this._callback.commentDeleteClick();
+    //console.log('evt.target: ',evt.target.parentElement.parentElement);
+    this._callback.commentDeleteClick(evt.target.dataset.id);
   }
 
   _commentEmojiClickHandler(evt) {
@@ -283,7 +273,7 @@ export default class FilmDetails extends SmartView {
     const deleteComments = this.getElement().querySelectorAll('.film-details__comment-delete');
     if(deleteComments.length > 0){
       deleteComments.forEach((deleteComment) => deleteComment.addEventListener('click', this._commentDeleteClickHandler));        
-      }
+    }
   }
 
   restoreHandlers() {
