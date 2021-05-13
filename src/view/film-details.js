@@ -1,6 +1,7 @@
 import { createFilmCommentsTemplate } from './film-comments';
 import { getHumanizeDuration, getHumanizeReleaseDate } from '../utils/film';
 import SmartView from './smart.js';
+import { generateComment } from '../mock/comment';
 
 const createFilmDetailsTemplate = (film = {}) => {
   const {
@@ -21,6 +22,7 @@ const createFilmDetailsTemplate = (film = {}) => {
     actors = [],
     releaseDate = '',
     newCommentEmoji = '',
+    newCommentText = '',
   } = film;
 
   const getGenres = (genres) => {
@@ -110,7 +112,7 @@ const createFilmDetailsTemplate = (film = {}) => {
           <div class="film-details__new-comment">
             <div class="film-details__add-emoji-label">${getNewCommentEmoji(newCommentEmoji)}</div>
             <label class="film-details__comment-label">
-              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${newCommentText}</textarea>
             </label>
             <div class="film-details__emoji-list">
               <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">
@@ -141,13 +143,18 @@ export default class FilmDetails extends SmartView {
   constructor(film) {
     super();
     this._data = film;
+    this._data.newCommentText = '';
     this._element = null;
     this._clickHandler = this._clickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._favouriteClickHandler = this._favouriteClickHandler.bind(this);
     this._commentEmojiClickHandler = this._commentEmojiClickHandler.bind(this);
+    this._commentDeleteClickHandler = this._commentDeleteClickHandler.bind(this);
+    this._commentAddClickHandler = this._commentAddClickHandler.bind(this);
+    this._saveInputValueChanged = this._saveInputValueChanged.bind(this);
     this.setCommentEmojiClickHandler();
+    this.setCommentTextChangedHandler();
   }
 
   getTemplate() {
@@ -157,6 +164,24 @@ export default class FilmDetails extends SmartView {
   _clickHandler(evt) {
     evt.preventDefault();
     this._callback.click();
+  }
+
+  updateComments(data) {
+    this.updateData(
+      Object.assign(
+        {},
+        this._data,
+        {
+          comments: data,
+        },
+      ), false,
+    );
+  }
+
+  _saveInputValueChanged(evt) {
+    evt.preventDefault();
+    const commentText = this.getElement().querySelector('.film-details__comment-input');
+    this._data.newCommentText = commentText.value;
   }
 
   _watchlistClickHandler() {
@@ -198,6 +223,41 @@ export default class FilmDetails extends SmartView {
     this._callback.favouriteClick();
   }
 
+  _commentDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.commentDeleteClick(evt.target.dataset.id);
+    this._scrollToEmoji();
+  }
+
+  _commentAddClickHandler(evt){
+    if((evt.ctrlKey || evt.metaKey) && (evt.key === 'Enter')) {
+      evt.preventDefault();
+
+      const addCommentEmotion = document.querySelector('.film-details__add-emoji-label');
+      const addCommentText = this.getElement().querySelector('.film-details__comment-input');
+
+      if(addCommentEmotion.firstChild === null){
+        return;
+      }
+
+      if(addCommentText.value.trim() === '') {
+        return;
+      }
+
+      const addCommentObj = generateComment(addCommentEmotion.firstChild.src.split('\\').pop().split('/').pop().split('.')[0], addCommentText.value);
+      this._callback.commentAddClick(addCommentObj);
+    }
+
+    this._scrollToEmoji();
+  }
+
+  _scrollToEmoji(){
+    const newCommentEmoji = document.querySelector('.film-details__add-emoji-label');
+    if(newCommentEmoji !== null){
+      newCommentEmoji.scrollIntoView();
+    }
+  }
+
   _commentEmojiClickHandler(evt) {
     evt.preventDefault();
     if (evt.target.tagName === 'IMG') {
@@ -215,10 +275,7 @@ export default class FilmDetails extends SmartView {
       hiddenInput.checked = true;
     }
 
-    const newCommentEmoji = document.querySelector('.film-details__add-emoji-label');
-    if(newCommentEmoji !== null){
-      newCommentEmoji.scrollIntoView();
-    }
+    this._scrollToEmoji();
   }
 
   setClickHandler(callback) {
@@ -261,11 +318,39 @@ export default class FilmDetails extends SmartView {
     }
   }
 
+  setCommentTextChangedHandler(callback) {
+    this._callback.commentTextChanged = callback;
+    const newCommentText = this.getElement().querySelector('.film-details__comment-input');
+    if(newCommentText !== null){
+      newCommentText.addEventListener('input', this._saveInputValueChanged);
+    }
+  }
+
+  setCommentDeleteClickHandler(callback) {
+    this._callback.commentDeleteClick = callback;
+    const deleteComments = this.getElement().querySelectorAll('.film-details__comment-delete');
+    if(deleteComments.length > 0){
+      deleteComments.forEach((deleteComment) => deleteComment.addEventListener('click', this._commentDeleteClickHandler));
+    }
+  }
+
+  setCommentAddClickHandler(callback) {
+    this._callback.commentAddClick = callback;
+    const newCommentAdd = this.getElement().querySelector('.film-details__comment-input');
+    if(newCommentAdd !== null){
+      newCommentAdd.addEventListener('keydown', this._commentAddClickHandler);
+      newCommentAdd.addEventListener('input', this._saveInputValueChanged);
+    }
+  }
+
   restoreHandlers() {
     this.setClickHandler(this._callback.click);
     this.setWatchlistClickHandler(this._callback.watchListClick);
     this.setWatchedClickHandler(this._callback.watchedClick);
     this.setFavouriteClickHandler(this._callback.favouriteClick);
     this.setCommentEmojiClickHandler(this._callback.commentEmojiClick);
+    this.setCommentDeleteClickHandler(this._callback.commentDeleteClick);
+    this.setCommentAddClickHandler(this._callback.commentAddClick);
+    this.setCommentTextChangedHandler(this._callback.commentTextChanged);
   }
 }
