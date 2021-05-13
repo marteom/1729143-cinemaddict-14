@@ -29,6 +29,7 @@ export const MENU_ITEMS = {
   WATCHLIST: 'Watchlist',
   HISTORY: 'History',
   FAVORITES: 'Favorites',
+  STATISTICS: 'Statistics',
 };
 
 export const UPDATE_TYPE = {
@@ -36,4 +37,3 @@ export const UPDATE_TYPE = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
 };
-

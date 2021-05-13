@@ -58,6 +58,14 @@ export default class SiteMenu {
     ];
   }
 
+  getMenuComponent() {
+    return this._siteMenuViewComponent;
+  }
+
+  setActiveMenuItemChangeHandler() {
+
+  }
+
   init() {
     const menuItems = this._getMenus();
     const prevFilterComponent = this._siteMenuViewComponent;

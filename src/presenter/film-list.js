@@ -1,6 +1,7 @@
 import SortContentView from '../view/sort-content';
 import FilmsView from '../view/films';
 import FilmsListView from '../view/films-list';
+import StatisticsView from '../view/statistics'
 import FilmsListCaptionView from '../view/films-list-caption';
 import FilmsListContainerView from '../view/films-list-container';
 import ShowMoreView from '../view/showmore-element';
@@ -10,7 +11,7 @@ import FilmsListEmptyView from '../view/films-list-empty';
 import { sortFilmsByDate, sortFilmsByRating } from '../utils/film';
 import { remove, RenderPosition, renderElement } from '../utils/render';
 import Film from './film';
-import { SORT_TYPE, UPDATE_TYPE } from '../utils/const';
+import { SORT_TYPE, UPDATE_TYPE, MENU_ITEMS } from '../utils/const';
 import { menuItems } from '../utils/site-menu';
 
 const FILM_COUNT_PER_STEP = 5;
@@ -32,11 +33,20 @@ export default class FilmList {
     this._showMoreViewComponent = new ShowMoreView();
     this._filmsListExtraViewComponent = new FilmsListExtraView();
     this._filmsListExtraCaptionViewComponent = new FilmsListExtraCaptionView();
+    this._statisticsViewComponent = new StatisticsView();
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleModelChange = this._handleModelChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
+  }
+
+  showFilmsList() {
+    this._filmsViewComponent.getElement().classList.remove('visually-hidden');
+  }
+
+  hideFilmsList() {
+    this._filmsViewComponent.getElement().classList.add('visually-hidden');
   }
 
   _renderFilmCard(filmsListContainer, film) {
@@ -51,41 +61,49 @@ export default class FilmList {
 
   _renderFilmsList() {
     const films = this._getFilms();
-
-    if (films.length <= 0) {
-      this._renderEmptyData();
-      return;
-    }
-    else {
-      remove(this._filmsListEmptyViewComponent);
+    if(this._menusModel.getMenuItem() === MENU_ITEMS.STATISTICS){
+      this.hideFilmsList();
+      renderElement(this._siteMainElement, this._statisticsViewComponent, RenderPosition.BEFOREEND);
     }
 
-    renderElement(
-      this._filmsListViewComponent,
-      this._filmsListCaptionViewComponent,
-      RenderPosition.BEFOREEND,
-    );
-    renderElement(
-      this._filmsListViewComponent,
-      this._filmsListContainerViewComponent,
-      RenderPosition.BEFOREEND,
-    );
-
-    this._renderSort();
-
-    for (let i = 0; i < film_count_showed; i++) {
-      if (films.length > i) {
-        this._renderFilmCard(
-          this._filmsListContainerViewComponent,
-          films[i],
-        );
+    else{
+      if (films.length <= 0) {
+        this._renderEmptyData();
+        return;
       }
-    }
+      else {
+        remove(this._filmsListEmptyViewComponent);
+      }
 
-    if (films.length > FILM_COUNT_PER_STEP) {
-      this._renderShowMoreButton();
-    }
+      renderElement(
+        this._filmsListViewComponent,
+        this._filmsListCaptionViewComponent,
+        RenderPosition.BEFOREEND,
+      );
+      renderElement(
+        this._filmsListViewComponent,
+        this._filmsListContainerViewComponent,
+        RenderPosition.BEFOREEND,
+      );
 
+      this._renderSort();
+
+      for (let i = 0; i < film_count_showed; i++) {
+        if (films.length > i) {
+          this._renderFilmCard(
+            this._filmsListContainerViewComponent,
+            films[i],
+          );
+        }
+      }
+
+      if (films.length > FILM_COUNT_PER_STEP) {
+        this._renderShowMoreButton();
+      }
+
+      this.showFilmsList();
+      remove(this._statisticsViewComponent);
+    }
   }
 
   _handleSortTypeChange(SortType) {
@@ -119,6 +137,10 @@ export default class FilmList {
 
   _getFilms() {
     const menuItemType = this._menusModel.getMenuItem();
+    if(menuItemType === MENU_ITEMS.STATISTICS){
+      return;
+    }
+
     const films = this._filmsModel.getFilms();
     const filtredFilms = menuItems[menuItemType](films);
 
