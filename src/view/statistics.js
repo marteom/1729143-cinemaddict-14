@@ -1,6 +1,37 @@
 import AbstractView from './abstract.js';
+import dayjs from 'dayjs';
+import Chart from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { getHumanizeDuration } from '../utils/film';
 
-const createStatisticsTemplate = () => {
+const createStatisticsTemplate = (films) => {
+  const getTotalDuration = () => {
+    let totalDuration = 0;
+    films.forEach((film) => film.isWatched ? totalDuration += film.duration : '');
+    return {
+      hours: dayjs({ minute: totalDuration }).hour(),
+      minutes: dayjs({ minute: totalDuration }).minute(),
+    }
+  };
+
+  const youWatchedValue =  films.filter((film) => film.isWatched).length;
+  const totalDurationValue = getTotalDuration();
+
+  const getTopGenre = () => {
+    let allGenres = [];
+    films.forEach((film) => allGenres.push(...film.genres));
+    console.log('allGenres: ', allGenres);
+
+    let result = {};
+    allGenres.forEach(function(a){
+      result[a] = result[a] + 1 || 1;
+    });
+
+    console.log('result: ', result);
+  };
+
+  getTopGenre();
+
   return `<section class="statistic">
   <p class="statistic__rank">
     Your rank
@@ -30,11 +61,11 @@ const createStatisticsTemplate = () => {
   <ul class="statistic__text-list">
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">You watched</h4>
-      <p class="statistic__item-text">22 <span class="statistic__item-description">movies</span></p>
+      <p class="statistic__item-text">${youWatchedValue} <span class="statistic__item-description">movies</span></p>
     </li>
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">Total duration</h4>
-      <p class="statistic__item-text">130 <span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
+      <p class="statistic__item-text">${totalDurationValue.hours} <span class="statistic__item-description">h</span> ${totalDurationValue.minutes} <span class="statistic__item-description">m</span></p>
     </li>
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">Top genre</h4>
@@ -57,6 +88,6 @@ export default class Statistics extends AbstractView {
   }
 
   getTemplate() {
-    return createStatisticsTemplate();
+    return createStatisticsTemplate(this._films);
   }
 }
