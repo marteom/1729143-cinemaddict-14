@@ -1,10 +1,90 @@
-import AbstractView from './abstract.js';
+import SmartView from './smart';
 import dayjs from 'dayjs';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { getHumanizeDuration } from '../utils/film';
 
-const createStatisticsTemplate = (films) => {
+const renderChart = (statisticCtx, labelsArray, dataArray) => {
+  const BAR_HEIGHT = 50;
+
+  // Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
+  statisticCtx.height = BAR_HEIGHT * 5;
+
+  return new Chart(statisticCtx, {
+    plugins: [ChartDataLabels],
+    type: 'horizontalBar',
+    data: {
+      labels: labelsArray, //['Sci-Fi', 'Animation', 'Fantasy', 'Comedy', 'TV Series'],
+      datasets: [{
+        data: dataArray, //[11, 8, 7, 4, 3],
+        backgroundColor: '#ffe800',
+        hoverBackgroundColor: '#ffe800',
+        anchor: 'start',
+        //barThickness: 24, // +
+      }],
+    },
+    options: {
+      plugins: {
+        datalabels: {
+          font: {
+            size: 20,
+          },
+          color: '#ffffff',
+          anchor: 'start',
+          align: 'start',
+          offset: 40,
+        },
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: '#ffffff',
+            padding: 100,
+            fontSize: 20,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+          //barThickness: 24,
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+      },
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
+      },
+    },
+  });
+}
+
+const getGenresCounts = (films) => {
+  let allGenres = [];
+  films.forEach((film) => {
+    if(film.isWatched){
+      allGenres.push(...film.genres)
+    }
+  });
+
+  let genresCounts = {};
+  allGenres.forEach(function(a){
+    genresCounts[a] = genresCounts[a] + 1 || 1;
+  });
+
+  return genresCounts;
+}
+
+const createStatisticsTemplate = (films, genresCounts) => {
   const getTotalDuration = () => {
     let totalDuration = 0;
     films.forEach((film) => film.isWatched ? totalDuration += film.duration : '');
@@ -18,19 +98,18 @@ const createStatisticsTemplate = (films) => {
   const totalDurationValue = getTotalDuration();
 
   const getTopGenre = () => {
-    let allGenres = [];
-    films.forEach((film) => allGenres.push(...film.genres));
-    console.log('allGenres: ', allGenres);
+    let max = -Infinity;
+    const maxWatchedGenre = Object.entries(genresCounts).reduce((a, [key, val]) => {
+        if (val > max) {
+          max = val;
+          return [key];
+        }
+        if (val === max) a.push(key);
+        return a;
+      }, [])
 
-    let result = {};
-    allGenres.forEach(function(a){
-      result[a] = result[a] + 1 || 1;
-    });
-
-    console.log('result: ', result);
+    return maxWatchedGenre.length > 0 ? maxWatchedGenre[0] : ''; 
   };
-
-  getTopGenre();
 
   return `<section class="statistic">
   <p class="statistic__rank">
@@ -69,7 +148,7 @@ const createStatisticsTemplate = (films) => {
     </li>
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">Top genre</h4>
-      <p class="statistic__item-text">Sci-Fi</p>
+      <p class="statistic__item-text">${getTopGenre()}</p>
     </li>
   </ul>
 
@@ -81,13 +160,36 @@ const createStatisticsTemplate = (films) => {
 };
 
 
-export default class Statistics extends AbstractView {
+export default class Statistics extends SmartView {
   constructor(films) {
     super();
     this._films = films;
+    this._statChart = null;
+    this._ganresInfo = getGenresCounts(this._films);
+
+    this._setChart();
   }
 
   getTemplate() {
-    return createStatisticsTemplate(this._films);
+    return createStatisticsTemplate(this._films, this._ganresInfo);
   }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this._statChart !== null) {
+      this._statChart = null;
+    }
+  }
+
+  _setChart() {
+    if (this._statChart !== null) {
+      this._statChart = null;
+    }
+
+    const statisticCtx = this.getElement().querySelector('.statistic__chart');
+
+    this._statChart = renderChart(statisticCtx, Object.keys(this._ganresInfo), Object.values(this._ganresInfo));
+  }
+
 }

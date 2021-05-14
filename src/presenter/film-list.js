@@ -33,7 +33,7 @@ export default class FilmList {
     this._showMoreViewComponent = new ShowMoreView();
     this._filmsListExtraViewComponent = new FilmsListExtraView();
     this._filmsListExtraCaptionViewComponent = new FilmsListExtraCaptionView();
-    this._statisticsViewComponent = new StatisticsView(this._getFilms());
+    this._statisticsViewComponent = null;
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleModelChange = this._handleModelChange.bind(this);
@@ -53,12 +53,19 @@ export default class FilmList {
 
   _renderFilmsList() {
     const films = this._getFilms();
+
     if(this._menusModel.getMenuItem() === MENU_ITEMS.STATISTICS){
-      this._filmsViewComponent.hide();
+      this._statisticsViewComponent = new StatisticsView(films);
       renderElement(this._siteMainElement, this._statisticsViewComponent, RenderPosition.BEFOREEND);
+      this._statisticsViewComponent.show();
+      this._filmsViewComponent.hide();
     }
 
     else{
+      if(this._statisticsViewComponent !== null) {
+        remove(this._statisticsViewComponent);
+      }
+
       if (films.length <= 0) {
         this._renderEmptyData();
         return;
@@ -93,8 +100,7 @@ export default class FilmList {
         this._renderShowMoreButton();
       }
 
-      this._filmsViewComponent.show();
-      remove(this._statisticsViewComponent);
+      this._filmsViewComponent.show();      
     }
   }
 
@@ -129,14 +135,13 @@ export default class FilmList {
 
   _getFilms() {
     const menuItemType = this._menusModel.getMenuItem();
-    if(menuItemType === MENU_ITEMS.STATISTICS){
-      return;
+    const films = this._filmsModel.getFilms();
+
+    if(menuItemType === MENU_ITEMS.STATISTICS){      
+      return menuItems[MENU_ITEMS.ALL](films);
     }
 
-    const films = this._filmsModel.getFilms();
-    const filtredFilms = menuItems[menuItemType](films);
-
-    return filtredFilms;
+    return menuItems[menuItemType](films);
   }
 
   _handleModelEvent(updateType, data) {

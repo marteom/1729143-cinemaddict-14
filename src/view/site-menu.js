@@ -19,7 +19,7 @@ const createMainMenuTemplate = (menuItems, activeMenuItem) => {
     <div class="main-navigation__items">
       ${menuItemsTemplate}
     </div>
-    <a href="#${MENU_ITEMS.STATISTICS}" class="main-navigation__additional">Stats</a>
+    <a href="#${MENU_ITEMS.STATISTICS}" class="main-navigation__additional ${activeMenuItem === MENU_ITEMS.STATISTICS ? 'main-navigation__item--active' : ''}">Stats</a>
   </nav>`;
 };
 
