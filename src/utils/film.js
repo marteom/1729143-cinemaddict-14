@@ -50,9 +50,9 @@ export const sortFilmsByRating = (FilmA, FilmB) => {
 };
 
 export const getFilmsStatSorted = (films, statFilter) => {
-  let filmsStat = [];
+  const filmsStat = [];
 
-  films.forEach((film) => {      
+  films.forEach((film) => {
     if(!film.watched.already_watched){
       return;
     }
@@ -79,4 +79,4 @@ export const getFilmsStatSorted = (films, statFilter) => {
 
   return filmsStat;
 
-}
+};

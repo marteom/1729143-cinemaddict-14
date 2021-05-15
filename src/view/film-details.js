@@ -2,7 +2,6 @@ import { createFilmCommentsTemplate } from './film-comments';
 import { getHumanizeDuration, getHumanizeReleaseDate } from '../utils/film';
 import SmartView from './smart.js';
 import { generateComment } from '../mock/comment';
-import dayjs from 'dayjs';
 import { getUtcDateNow } from '../utils/common';
 
 const createFilmDetailsTemplate = (film = {}) => {
@@ -208,7 +207,7 @@ export default class FilmDetails extends SmartView {
           watched:{
             already_watched: !this._data.watched.already_watched,
             watching_date: this._data.watched.already_watched ? '' : getUtcDateNow(),
-          }
+          },
         },
       ), true,
     );

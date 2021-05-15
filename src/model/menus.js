@@ -5,7 +5,6 @@ export default class Menus extends Observer {
   constructor() {
     super();
     this._activeMenuItem = MENU_ITEMS.ALL;
-    this._prevMenuItem = null;
   }
 
   setMenuItem(updateType, menuItem) {

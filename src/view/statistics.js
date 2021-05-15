@@ -63,9 +63,9 @@ const renderChart = (statisticCtx, labelsArray, dataArray) => {
       },
     },
   });
-}
+};
 
-const createStatisticsTemplate = (films, genresCounts) => {
+const createStatisticsTemplate = () => {
   return `<div class="statistic__chart-wrap">
     <canvas class="statistic__chart" width="1000"></canvas>
   </div>`;

@@ -69,8 +69,8 @@ export default class Film{
           watched:{
             already_watched: !this._film.watched.already_watched,
             watching_date: this._film.watched.already_watched ? '' : getUtcDateNow(),
-          }
-        },        
+          },
+        },
       ),
     );
   }

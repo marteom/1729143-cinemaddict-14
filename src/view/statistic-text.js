@@ -9,7 +9,7 @@ const createStatisticTextTemplate = (films, genresCounts) => {
     return {
       hours: dayjs({ minute: totalDuration }).hour(),
       minutes: dayjs({ minute: totalDuration }).minute(),
-    }
+    };
   };
 
   const youWatchedValue =  films.filter((film) => film.watched.already_watched).length;
@@ -22,15 +22,15 @@ const createStatisticTextTemplate = (films, genresCounts) => {
 
     let max = -Infinity;
     const maxWatchedGenre = Object.entries(genresCounts).reduce((a, [key, val]) => {
-        if (val > max) {
-          max = val;
-          return [key];
-        }
-        if (val === max) a.push(key);
-        return a;
-      }, [])
+      if (val > max) {
+        max = val;
+        return [key];
+      }
+      if (val === max) a.push(key);
+      return a;
+    }, []);
 
-    return maxWatchedGenre.length > 0 ? maxWatchedGenre[0] : ''; 
+    return maxWatchedGenre.length > 0 ? maxWatchedGenre[0] : '';
   };
 
   return `<ul class="statistic__text-list">

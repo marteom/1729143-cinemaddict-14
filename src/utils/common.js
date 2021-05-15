@@ -15,15 +15,15 @@ export const getFalseOrTrue = () => {
 export const getUtcDateNow = () => {
   dayjs.extend(utc);
   return dayjs.utc().format();
-}
+};
 
 export const getWatchedData = () => {
   const isWatched = getFalseOrTrue();
   return {
-    "already_watched": isWatched,
-    "watching_date": isWatched ? `${getRandomInteger(2020,2021)}-${getRandomInteger(3,12)}-${getRandomInteger(10,25)}T00:00:00.000Z` : '',
-  }
-}
+    'already_watched': isWatched,
+    'watching_date': isWatched ? `${getRandomInteger(2020,2021)}-${getRandomInteger(3,12)}-${getRandomInteger(10,25)}T00:00:00.000Z` : '',
+  };
+};
 
 export const updateItem = (items, update) => {
   const index = items.findIndex((item) => item.id === update.id);
