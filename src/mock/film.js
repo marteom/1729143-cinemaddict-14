@@ -1,5 +1,5 @@
 import { generateValue, generateDescription } from '../utils/film';
-import { getRandomInteger, getFalseOrTrue } from '../utils/common';
+import { getRandomInteger, getFalseOrTrue, getWatchedData } from '../utils/common';
 import { GENRES } from '../utils/const';
 import { generateComment } from './comment';
 import { nanoid } from 'nanoid';
@@ -74,7 +74,7 @@ export const generateFilm = () => {
     duration: getRandomInteger(15, 200),
     genres: Array(getRandomInteger(1,3)).fill().map(() => generateValue(GENRES)),
     isWatchList: getFalseOrTrue(),
-    isWatched: getFalseOrTrue(),
+    watched: getWatchedData(),
     isFavorite: getFalseOrTrue(),
     comments: Array(getRandomInteger(0,5)).fill().map(generateComment),
     detailsAge: getRandomInteger(0, 18),

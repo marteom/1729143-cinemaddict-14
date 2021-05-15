@@ -2,6 +2,7 @@ import FilmCardView from '../view/film-card';
 import FilmDetailsView from '../view/film-details';
 import { renderElement, RenderPosition, remove, replace } from '../utils/render';
 import { UPDATE_TYPE } from '../utils/const';
+import { getUtcDateNow } from '../utils/common';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -65,8 +66,11 @@ export default class Film{
         {},
         this._film,
         {
-          isWatched: !this._film.isWatched,
-        },
+          watched:{
+            already_watched: !this._film.watched.already_watched,
+            watching_date: this._film.watched.already_watched ? '' : getUtcDateNow(),
+          }
+        },        
       ),
     );
   }
@@ -114,7 +118,7 @@ export default class Film{
         },
       ),
     );
-    this._filmDetailsComponent.updateComments(this._film.comments.filter( (comment) => comment.id != id));
+    this._filmDetailsComponent.updateComments(this._film.comments.filter((comment) => comment.id != id));
   }
 
   _handleFilmCardClick() {

@@ -9,14 +9,9 @@ export default class Menus extends Observer {
   }
 
   setMenuItem(updateType, menuItem) {
-    //this._prevMenuItem = this._activeMenuItem;
     this._activeMenuItem = menuItem;
     this._notify(updateType, menuItem);
   }
-
-  // getPrevMenuItem() {
-  //   return this._prevMenuItem;
-  // }
 
   getMenuItem() {
     return this._activeMenuItem;

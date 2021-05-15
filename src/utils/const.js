@@ -37,3 +37,11 @@ export const UPDATE_TYPE = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
 };
+
+export const STAT_FILTERS = {
+  ALL: 'All time',
+  TODAY: 'Today',
+  WEEK: 'Week',
+  MONTH: 'Month',
+  YEAR: 'Year',
+};

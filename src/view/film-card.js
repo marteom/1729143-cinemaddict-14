@@ -3,9 +3,9 @@ import { getHumanizeDuration } from '../utils/film';
 import dayjs from 'dayjs';
 
 const createFilmCardTemplate = (film) => {
-  const { title, raiting, releaseDate, duration, genres, poster, description, isWatchList, isWatched, isFavorite, comments } = film;
+  const { title, raiting, releaseDate, duration, genres, poster, description, isWatchList, watched, isFavorite, comments } = film;
   const isWatchListActive = isWatchList ? 'film-card__controls-item--active' : '';
-  const isWatchedActive = isWatched ? 'film-card__controls-item--active' : '';
+  const isWatchedActive = watched.already_watched ? 'film-card__controls-item--active' : '';
   const isFavoriteActive = isFavorite ? 'film-card__controls-item--active' : '';
 
   return `<article class="film-card">
