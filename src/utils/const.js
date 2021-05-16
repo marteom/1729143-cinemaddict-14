@@ -29,6 +29,7 @@ export const MENU_ITEMS = {
   WATCHLIST: 'Watchlist',
   HISTORY: 'History',
   FAVORITES: 'Favorites',
+  STATISTICS: 'Statistics',
 };
 
 export const UPDATE_TYPE = {
@@ -37,3 +38,10 @@ export const UPDATE_TYPE = {
   MAJOR: 'MAJOR',
 };
 
+export const STAT_FILTERS = {
+  ALL: 'All time',
+  TODAY: 'Today',
+  WEEK: 'Week',
+  MONTH: 'Month',
+  YEAR: 'Year',
+};

@@ -1,4 +1,5 @@
 import AbstractView from './abstract.js';
+import { MENU_ITEMS } from '../utils/const';
 
 const createMainMenuItemTemplate = (menuItem, activeMenuItem) => {
   const {type, name, count} = menuItem;
@@ -18,7 +19,7 @@ const createMainMenuTemplate = (menuItems, activeMenuItem) => {
     <div class="main-navigation__items">
       ${menuItemsTemplate}
     </div>
-    <a href="#stats" class="main-navigation__additional">Stats</a>
+    <a href="#${MENU_ITEMS.STATISTICS}" class="main-navigation__additional ${activeMenuItem === MENU_ITEMS.STATISTICS ? 'main-navigation__item--active' : ''}">Stats</a>
   </nav>`;
 };
 
@@ -36,7 +37,7 @@ export default class SiteMenu extends AbstractView {
 
   _activeMenuItemChangeHandler(evt) {
     evt.preventDefault();
-    if(evt.target.className.trim() === 'main-navigation__item'){
+    if(evt.target.className.trim() === 'main-navigation__item' || evt.target.className.trim() === 'main-navigation__additional'){
       const hrefMenu = evt.target.getAttribute('href');
       const menuItem = hrefMenu.slice(1, hrefMenu.length);
       this._callback.activeMenuItemChange(menuItem);

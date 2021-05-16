@@ -2,6 +2,7 @@ import { createFilmCommentsTemplate } from './film-comments';
 import { getHumanizeDuration, getHumanizeReleaseDate } from '../utils/film';
 import SmartView from './smart.js';
 import { generateComment } from '../mock/comment';
+import { getUtcDateNow } from '../utils/common';
 
 const createFilmDetailsTemplate = (film = {}) => {
   const {
@@ -13,7 +14,7 @@ const createFilmDetailsTemplate = (film = {}) => {
     duration = '',
     genres = [],
     isWatchList = false,
-    isWatched = false,
+    watched = {},
     isFavorite = false,
     comments = [],
     detailsAge = 0,
@@ -99,7 +100,7 @@ const createFilmDetailsTemplate = (film = {}) => {
         <section class="film-details__controls">
           <input type="checkbox" ${isWatchList ? 'checked' : ''} class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-          <input type="checkbox" ${isWatched ? 'checked' : ''} class="film-details__control-input visually-hidden" id="watched" name="watched">
+          <input type="checkbox" ${watched.already_watched ? 'checked' : ''} class="film-details__control-input visually-hidden" id="watched" name="watched">
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
           <input type="checkbox" ${isFavorite ? 'checked' : ''} class="film-details__control-input visually-hidden" id="favorite" name="favorite">
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
@@ -203,7 +204,10 @@ export default class FilmDetails extends SmartView {
         {},
         this._data,
         {
-          isWatched: !this._data.isWatched,
+          watched:{
+            already_watched: !this._data.watched.already_watched,
+            watching_date: this._data.watched.already_watched ? '' : getUtcDateNow(),
+          },
         },
       ), true,
     );
