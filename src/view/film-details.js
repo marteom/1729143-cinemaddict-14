@@ -1,10 +1,10 @@
 import { createFilmCommentsTemplate } from './film-comments';
+import LoadingView from './loading.js';
 import { getHumanizeDuration, getHumanizeReleaseDate } from '../utils/film';
 import SmartView from './smart.js';
-import { generateComment } from '../mock/comment';
 import { getUtcDateNow } from '../utils/common';
 
-const createFilmDetailsTemplate = (film = {}) => {
+const createFilmDetailsTemplate = (film = {}, serverComments) => {
   const {
     title = '',
     poster = '',
@@ -109,7 +109,7 @@ const createFilmDetailsTemplate = (film = {}) => {
       <div class="film-details__bottom-container">
         <section class="film-details__comments-wrap">
           <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
-          ${createFilmCommentsTemplate(comments)}          
+          ${createFilmCommentsTemplate(serverComments)}          
           <div class="film-details__new-comment">
             <div class="film-details__add-emoji-label">${getNewCommentEmoji(newCommentEmoji)}</div>
             <label class="film-details__comment-label">
@@ -141,11 +141,14 @@ const createFilmDetailsTemplate = (film = {}) => {
 };
 
 export default class FilmDetails extends SmartView {
-  constructor(film) {
+  constructor(film, serverComments) {
     super();
+    this._serverComments = serverComments;
     this._data = film;
     this._data.newCommentText = '';
+    this._isLoading = true;
     this._element = null;
+    this._loadingComponent = new LoadingView();
     this._clickHandler = this._clickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
@@ -159,7 +162,7 @@ export default class FilmDetails extends SmartView {
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._data);
+    return createFilmDetailsTemplate(this._data, this._serverComments);
   }
 
   _clickHandler(evt) {
@@ -248,7 +251,10 @@ export default class FilmDetails extends SmartView {
         return;
       }
 
-      const addCommentObj = generateComment(addCommentEmotion.firstChild.src.split('\\').pop().split('/').pop().split('.')[0], addCommentText.value);
+      const addCommentObj = {
+        comment: addCommentText.value,
+        emotion: addCommentEmotion.firstChild.src.split('\\').pop().split('/').pop().split('.')[0],
+      };
       this._callback.commentAddClick(addCommentObj);
     }
 

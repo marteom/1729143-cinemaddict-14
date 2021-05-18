@@ -3,6 +3,8 @@ import FilmsModel from './model/films';
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
 };
 
 const SuccessHTTPStatusRange = {
@@ -20,7 +22,16 @@ export default class Api {
     return this._load({url: 'movies'})
       .then(Api.toJSON)
       .then((films) => {
-      films.map(FilmsModel.adaptToClient)});
+        return films.map(FilmsModel.adaptToClient);
+      });
+  }
+
+  getComments(film_id) {
+    return this._load({url: `comments/${film_id}`})
+      .then(Api.toJSON)
+      .then((comments) => {
+        return comments;
+      });
   }
 
   updateFilm(film) {
