@@ -11,7 +11,7 @@ const getComments = (comments) => {
       <div>
         <p class="film-details__comment-text">${he.encode(comment.comment)}</p>
         <p class="film-details__comment-info">
-          <span class="film-details__comment-author">${comment.autor}</span>
+          <span class="film-details__comment-author">${comment.author}</span>
           <span class="film-details__comment-day">${getHumanizeCommentDate(comment.date)}</span>
           <button data-id="${comment.id}" class="film-details__comment-delete">Delete</button>
         </p>

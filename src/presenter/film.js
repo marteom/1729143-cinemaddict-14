@@ -10,10 +10,11 @@ const Mode = {
 };
 
 export default class Film{
-  constructor(filmsListContainer, changeData, changeMode){
+  constructor(filmsListContainer, changeData, changeMode, api){
     this._filmsListContainer = filmsListContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
+    this._api = api;
     this._handleFilmCardClick = this._handleFilmCardClick.bind(this);
     this._handleFilmCardCloseClick = this._handleFilmCardCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
@@ -122,14 +123,20 @@ export default class Film{
   }
 
   _handleFilmCardClick() {
-    this._filmDetailsComponent = new FilmDetailsView(this._film);
-    this._filmDetailsComponent.setClickHandler(this._handleFilmCardCloseClick);
-    this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
-    this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
-    this._filmDetailsComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
-    this._filmDetailsComponent.setCommentDeleteClickHandler(this._handleCommentDeleteClick);
-    this._filmDetailsComponent.setCommentAddClickHandler(this._handleCommentAddClick);
-    this._viewFilmDetails(true);
+    this._api.getComments(this._film.id)
+      .then((serverComments) => {
+        this._filmDetailsComponent = new FilmDetailsView(this._film, serverComments);
+        this._filmDetailsComponent.setClickHandler(this._handleFilmCardCloseClick);
+        this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
+        this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);
+        this._filmDetailsComponent.setFavouriteClickHandler(this._handleFavouriteFilmCardClick);
+        this._filmDetailsComponent.setCommentDeleteClickHandler(this._handleCommentDeleteClick);
+        this._filmDetailsComponent.setCommentAddClickHandler(this._handleCommentAddClick);
+        this._viewFilmDetails(true);
+      })
+      .catch(() => {
+        alert('Film details is not available');
+      });
   }
 
   _handleFilmCardCloseClick() {

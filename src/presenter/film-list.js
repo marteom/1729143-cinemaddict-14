@@ -7,8 +7,11 @@ import ShowMoreView from '../view/showmore-element';
 import FilmsListExtraView from '../view/films-list-extra';
 import FilmsListExtraCaptionView from '../view/films-list-extra-caption';
 import FilmsListEmptyView from '../view/films-list-empty';
+import LoadingView from '../view/loading.js';
+import ProfileView from '../view/profile';
 import { sortFilmsByDate, sortFilmsByRating } from '../utils/film';
 import { remove, RenderPosition, renderElement } from '../utils/render';
+import { getProfileRating } from '../utils/common';
 import Film from './film';
 
 import Statistic from './statistic';
@@ -20,10 +23,13 @@ const FILM_COUNT_PER_STEP = 5;
 let film_count_showed = FILM_COUNT_PER_STEP;
 
 export default class FilmList {
-  constructor(siteMainElement, filmsModel, menusModel) {
+  constructor(siteHeaderElement, siteMainElement, filmsModel, menusModel, api) {
+    this._siteHeaderElement = siteHeaderElement;
     this._siteMainElement = siteMainElement;
     this._filmsModel = filmsModel;
     this._menusModel = menusModel;
+    this._api = api;
+    this._isLoading = true;
     this._filmPresenter = {};
     this._statisticPresenter = null;
     this._currentSortType = SORT_TYPE.DEFAULT;
@@ -36,6 +42,8 @@ export default class FilmList {
     this._showMoreViewComponent = new ShowMoreView();
     this._filmsListExtraViewComponent = new FilmsListExtraView();
     this._filmsListExtraCaptionViewComponent = new FilmsListExtraCaptionView();
+    this._loadingComponent = new LoadingView();
+    this._profileComponent = null;
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleModelChange = this._handleModelChange.bind(this);
@@ -48,6 +56,7 @@ export default class FilmList {
       filmsListContainer,
       this._handleFilmChange,
       this._handleModelChange,
+      this._api,
     );
     filmCard.init(film);
     this._filmPresenter[film.id] = filmCard;
@@ -64,6 +73,12 @@ export default class FilmList {
   }
 
   _renderFilmsList(films) {
+
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+
     if(this._statisticPresenter !== null){
       this._clearStatistics();
     }
@@ -81,6 +96,8 @@ export default class FilmList {
       else {
         remove(this._filmsListEmptyViewComponent);
       }
+
+      this._renderRating(films);
 
       renderElement(
         this._filmsListViewComponent,
@@ -110,6 +127,16 @@ export default class FilmList {
 
       this._filmsViewComponent.show();
     }
+  }
+
+  _renderRating(films) {
+    if(this._profileComponent) {
+      remove(this._profileComponent);
+    }
+
+    const watchedFilmsCount = films.filter((film) => film.watched.already_watched).length;
+    this._profileComponent = new ProfileView(getProfileRating(watchedFilmsCount));
+    renderElement(this._siteHeaderElement, this._profileComponent, RenderPosition.BEFOREEND);
   }
 
   _handleSortTypeChange(SortType) {
@@ -163,6 +190,11 @@ export default class FilmList {
         this._clearFilmsList(true);
         this._renderFilmsList(this._getFilms());
         break;
+      case UPDATE_TYPE.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._renderFilmsList(this._getFilms());
+        break;
     }
   }
 
@@ -204,6 +236,10 @@ export default class FilmList {
     );
   }
 
+  _renderLoading() {
+    renderElement(this._filmsListViewComponent, this._loadingComponent, RenderPosition.AFTERBEGIN);
+  }
+
   _renderSort() {
     renderElement(
       this._filmsListViewComponent,
@@ -227,6 +263,7 @@ export default class FilmList {
 
     resetFilmsShowed ? film_count_showed = FILM_COUNT_PER_STEP : '';
 
+    remove(this._loadingComponent);
     remove(this._showMoreViewComponent);
   }
 
@@ -241,7 +278,14 @@ export default class FilmList {
   }
 
   _handleFilmChange(updateType, updatedFilm) {
-    this._filmsModel.updateFilm(updateType, updatedFilm);
+    this._api.updateFilm(updatedFilm)
+      .then(() => {
+        this._filmsModel.updateFilm(updateType, updatedFilm);
+        this._renderRating(this._filmsModel.getFilms());
+      })
+      .catch(() => {
+        alert('Update failed');
+      });
   }
 
   init() {
@@ -267,5 +311,6 @@ export default class FilmList {
     this._menusModel.addObserver(this._handleModelEvent);
 
     this._renderFilmsList(this._sourcedFilms);
+
   }
 }
