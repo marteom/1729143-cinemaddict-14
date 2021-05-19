@@ -26,12 +26,29 @@ export default class Api {
       });
   }
 
-  getComments(film_id) {
-    return this._load({url: `comments/${film_id}`})
+  getComments(filmId) {
+    return this._load({url: `comments/${filmId}`})
       .then(Api.toJSON)
       .then((comments) => {
         return comments;
       });
+  }
+
+  deleteComment(commentId) {
+    return this._load({
+      url: `comments/${commentId}`,
+      method: Method.DELETE,
+    });
+  }
+
+  addComment(filmId, localComment) {
+    return this._load({
+      url: `comments/${filmId}`,
+      method: Method.POST,
+      body: JSON.stringify(localComment),
+      headers: new Headers({'Content-Type': 'application/json'}),
+    })
+      .then(Api.toJSON);
   }
 
   updateFilm(film) {

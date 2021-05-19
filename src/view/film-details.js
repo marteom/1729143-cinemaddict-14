@@ -3,6 +3,7 @@ import LoadingView from './loading.js';
 import { getHumanizeDuration, getHumanizeReleaseDate } from '../utils/film';
 import SmartView from './smart.js';
 import { getUtcDateNow } from '../utils/common';
+import { COMMENT_ACTIONS } from '../utils/const';
 
 const createFilmDetailsTemplate = (film = {}, serverComments) => {
   const {
@@ -170,7 +171,9 @@ export default class FilmDetails extends SmartView {
     this._callback.click();
   }
 
-  updateComments(data) {
+  /*
+  updateComments(data, commentAction, commentId) {
+    console.log('data: ',data);
     this.updateData(
       Object.assign(
         {},
@@ -178,8 +181,54 @@ export default class FilmDetails extends SmartView {
         {
           comments: data,
         },
-      ), false,
+      ), true,
     );
+
+    switch(commentAction){
+      case COMMENT_ACTIONS.DELETE:
+        this._deleteComment(commentId);
+        break;
+      case COMMENT_ACTIONS.ADD:
+        console.log(111);
+        break;
+    }
+
+  }
+*/
+
+
+updateComments(data) {
+  console.log('data: ',data);
+  this.updateData(
+    Object.assign(
+      {},
+      this._data,
+      {
+        comments: data,
+      },
+    ), false,
+  );
+
+}
+
+
+  _deleteComment(commentId) {
+    let deleteCommentElement = null;
+    const dataIds = document.querySelectorAll('[data-id]');
+
+    dataIds.forEach((dataId) => 
+    {
+      if(dataId.dataset.id == commentId)
+      {
+        deleteCommentElement = dataId;
+        return;
+      }
+    });
+
+    if(deleteCommentElement != null){
+      const commentsList = this.getElement().querySelector('.film-details__comments-list');
+      commentsList.removeChild(deleteCommentElement.parentElement.parentElement.parentElement);
+    }
   }
 
   _saveInputValueChanged(evt) {

@@ -46,3 +46,8 @@ export const STAT_FILTERS = {
   MONTH: 'Month',
   YEAR: 'Year',
 };
+
+export const COMMENT_ACTIONS = {
+  DELETE: 'Delete',
+  ADD: 'Add,'
+}

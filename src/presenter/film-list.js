@@ -283,8 +283,8 @@ export default class FilmList {
         this._filmsModel.updateFilm(updateType, updatedFilm);
         this._renderRating(this._filmsModel.getFilms());
       })
-      .catch(() => {
-        alert('Update failed');
+      .catch((ex) => {
+        alert('Update failed: ', ex);
       });
   }
 
