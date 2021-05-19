@@ -90,31 +90,31 @@ export default class Film{
   }
 
   _handleCommentAddClick(comment) {
-    
-    const existingComments = this._film.comments;
-    existingComments.push(comment);
-
-    //this._api.addComment(this._film.id, comment)
-    //.then((response) => {
+    this._api.addComment(this._film.id, comment)
+    .then((response) => {
       const newObject = Object.assign(
         {},
         this._film,
         {
-          comments: existingComments, //response.comments.map((comment) => {return comment.id}),
+          comments: response.comments.map((comment) => {return comment.id}), // comments: existingComments,
         },
       );
+
+      console.log('newObject: ', newObject);
 
       this._changeData(
         this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
         newObject,
       );
 
-      this._filmDetailsComponent.updateComments(newObject.comments); //this._filmDetailsComponent.updateComments(newObject, COMMENT_ACTIONS.ADD, null);
-      //this._filmDetailsComponent.updateComments(response.comments);
-    //})
-    //.catch(() => {
-    //  alert('Error! Comment not added');
-    //});
+      this._filmDetailsComponent.updateComments(newObject.comments);
+
+    //   //this._filmDetailsComponent.updateComments(newObject, COMMENT_ACTIONS.ADD, null); // this._filmDetailsComponent.updateComments(newObject.comments);
+    //   //this._filmDetailsComponent.updateComments(response.comments);
+    })
+    .catch(() => {
+     alert('Error! Comment not added');
+    });
   }
 
   _handleCommentDeleteClick(id) {

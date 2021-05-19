@@ -52,6 +52,7 @@ export default class Api {
   }
 
   updateFilm(film) {
+    console.log('---film: ', film);
     return this._load({
       url: `movies/${film.id}`,
       method: Method.PUT,

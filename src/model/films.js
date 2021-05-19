@@ -48,7 +48,6 @@ export default class Films extends Observer {
         watched: {
           already_watched: film.user_details.already_watched,
           watching_date: film.user_details.watching_date,
-
         },
         isFavorite: film.user_details.favorite,
         detailsAge: film.film_info.age_rating,

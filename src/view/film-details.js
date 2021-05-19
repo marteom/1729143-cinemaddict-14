@@ -198,7 +198,7 @@ export default class FilmDetails extends SmartView {
 
 
 updateComments(data) {
-  console.log('data: ',data);
+  console.log('updateComments: ', data);
   this.updateData(
     Object.assign(
       {},
@@ -206,9 +206,8 @@ updateComments(data) {
       {
         comments: data,
       },
-    ), false,
+    ), false, // если true, то не обновиться кол-во комментов в попапе
   );
-
 }
 
 
@@ -304,6 +303,15 @@ updateComments(data) {
         comment: addCommentText.value,
         emotion: addCommentEmotion.firstChild.src.split('\\').pop().split('/').pop().split('.')[0],
       };
+
+      // console.log('wwwwwww: ', this._data);
+      // this.updateData(
+      //   Object.assign(
+      //     {},
+      //     this._data,
+      //   ), true,
+      // );
+
       this._callback.commentAddClick(addCommentObj);
     }
 
