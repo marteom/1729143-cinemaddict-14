@@ -7,7 +7,6 @@ import { COMMENT_ACTIONS } from '../utils/const';
 
 const createFilmDetailsTemplate = (film = {}, serverComments) => {
   const {
-    id = '',
     title = '',
     poster = '',
     country = '',
@@ -150,7 +149,6 @@ export default class FilmDetails extends SmartView {
     this._data.newCommentText = '';
     this._isLoading = true;
     this._element = null;
-    this._isDisabled = false;
     this._loadingComponent = new LoadingView();
     this._clickHandler = this._clickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
@@ -165,7 +163,7 @@ export default class FilmDetails extends SmartView {
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._data, this._serverComments, this._isDisabled);
+    return createFilmDetailsTemplate(this._data, this._serverComments);
   }
 
   _clickHandler(evt) {
@@ -175,31 +173,35 @@ export default class FilmDetails extends SmartView {
 
   setDeletingComment(commentId) {
     const deleteCommentElement = this._getDeletingComment(commentId);
-
     if(deleteCommentElement != null){
       deleteCommentElement.innerText = 'Deleting...';
       deleteCommentElement.disabled = true;
-      //const commentsList = this.getElement().querySelector('.film-details__comments-list');
-      //commentsList.removeChild(deleteCommentElement.parentElement.parentElement.parentElement);
-    }    
+    }
   }
 
   setAbortingComment(commentId) {
     const deleteCommentElement = this._getDeletingComment(commentId);
-
     if(deleteCommentElement != null){
       deleteCommentElement.innerText = 'Delete';
       deleteCommentElement.disabled = false;
-      //const commentsList = this.getElement().querySelector('.film-details__comments-list');
-      //commentsList.removeChild(deleteCommentElement.parentElement.parentElement.parentElement);
-    }  
+    }
+  }
+
+  disableCommentForm() {
+    const commentTextElement = this.getElement().querySelector('.film-details__comment-input');
+    commentTextElement.disabled = true;
+  }
+
+  enableCommentForm() {
+    const commentTextElement = this.getElement().querySelector('.film-details__comment-input');
+    commentTextElement.disabled = false;
   }
 
   _getDeletingComment(commentId) {
     let deleteCommentElement = null;
     const dataIds = document.querySelectorAll('[data-id]');
 
-    dataIds.forEach((dataId) => 
+    dataIds.forEach((dataId) =>
     {
       if(dataId.dataset.id == commentId)
       {

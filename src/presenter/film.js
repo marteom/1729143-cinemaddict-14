@@ -90,52 +90,53 @@ export default class Film{
   }
 
   _handleCommentAddClick(comment) {
+    this._filmDetailsComponent.disableCommentForm();
     this._api.addComment(this._film.id, comment)
-    .then((response) => {
-      const newObject = Object.assign(
-        {},
-        this._film,
-        {
-          comments: response.comments.map((comment) => {return comment.id}),
-        },
-      );
+      .then((response) => {
+        const newObject = Object.assign(
+          {},
+          this._film,
+          {
+            comments: response.comments.map((comment) => {return comment.id;}),
+          },
+        );
 
-      this._changeData(
-        this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
-        newObject,
-      );
+        this._changeData(
+          this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
+          newObject,
+        );
 
-      this._serverComments = response.comments;
-      this._filmDetailsComponent.updateComments(this._serverComments, COMMENT_ACTIONS.ADD);
-    })
-    .catch(() => {
-     alert('Error! Comment not added');
-    });
+        this._serverComments = response.comments;
+        this._filmDetailsComponent.updateComments(this._serverComments, COMMENT_ACTIONS.ADD);
+      })
+      .catch(() => {
+        this._filmDetailsComponent.enableCommentForm();
+        this._filmDetailsComponent.shake(null);
+      });
   }
 
   _handleCommentDeleteClick(id) {
     this._filmDetailsComponent.setDeletingComment(id);
     this._api.deleteComment(id)
-    .then(() => {
-      //throw 525;
-      this._changeData(
-        this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
-        Object.assign(
-          {},
-          this._film,
-          {
-            comments: this._film.comments.filter((comment) => comment != id),
-          },
-        ),
-      );
+      .then(() => {
+        this._changeData(
+          this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
+          Object.assign(
+            {},
+            this._film,
+            {
+              comments: this._film.comments.filter((comment) => comment != id),
+            },
+          ),
+        );
 
-      this._serverComments = this._serverComments.filter((comment) => comment.id != id);
-      this._filmDetailsComponent.updateComments(this._serverComments, COMMENT_ACTIONS.DELETE);
-    })
-    .catch(() => {
-      this._filmDetailsComponent.shake(null);
-      this._filmDetailsComponent.setAbortingComment(id);
-    });    
+        this._serverComments = this._serverComments.filter((comment) => comment.id != id);
+        this._filmDetailsComponent.updateComments(this._serverComments, COMMENT_ACTIONS.DELETE);
+      })
+      .catch(() => {
+        this._filmDetailsComponent.setAbortingComment(id);
+        this._filmDetailsComponent.shake(null);
+      });
   }
 
   _handleFilmCardClick() {

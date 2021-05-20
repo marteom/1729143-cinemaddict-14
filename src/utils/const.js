@@ -49,5 +49,5 @@ export const STAT_FILTERS = {
 
 export const COMMENT_ACTIONS = {
   DELETE: 'Delete',
-  ADD: 'Add,'
-}
+  ADD: 'Add,',
+};

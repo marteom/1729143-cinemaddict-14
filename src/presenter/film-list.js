@@ -278,13 +278,13 @@ export default class FilmList {
   }
 
   _handleFilmChange(updateType, updatedFilm) {
-   this._api.updateFilm(updatedFilm)
-     .then(() => {
+    this._api.updateFilm(updatedFilm)
+      .then(() => {
         this._filmsModel.updateFilm(updateType, updatedFilm);
         this._renderRating(this._filmsModel.getFilms());
       })
       .catch((ex) => {
-       alert('Update failed: ', ex);
+        alert('Update failed: ', ex);
       });
   }
 
