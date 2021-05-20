@@ -96,21 +96,17 @@ export default class Film{
         {},
         this._film,
         {
-          comments: response.comments.map((comment) => {return comment.id}), // comments: existingComments,
+          comments: response.comments.map((comment) => {return comment.id}),
         },
       );
-
-      console.log('newObject: ', newObject);
 
       this._changeData(
         this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
         newObject,
       );
 
-      this._filmDetailsComponent.updateComments(newObject.comments);
-
-    //   //this._filmDetailsComponent.updateComments(newObject, COMMENT_ACTIONS.ADD, null); // this._filmDetailsComponent.updateComments(newObject.comments);
-    //   //this._filmDetailsComponent.updateComments(response.comments);
+      this._serverComments = response.comments;
+      this._filmDetailsComponent.updateComments(this._serverComments, COMMENT_ACTIONS.ADD);
     })
     .catch(() => {
      alert('Error! Comment not added');
@@ -118,8 +114,10 @@ export default class Film{
   }
 
   _handleCommentDeleteClick(id) {
+    this._filmDetailsComponent.setDeletingComment(id);
     this._api.deleteComment(id)
     .then(() => {
+      //throw 525;
       this._changeData(
         this._mode === Mode.DEFAULT ? UPDATE_TYPE.MINOR : this._mode === Mode.POPUP ? UPDATE_TYPE.PATCH : '',
         Object.assign(
@@ -131,17 +129,20 @@ export default class Film{
         ),
       );
 
-      this._filmDetailsComponent.updateComments(this._film.comments.filter((comment) => comment != id), COMMENT_ACTIONS.DELETE, id);
+      this._serverComments = this._serverComments.filter((comment) => comment.id != id);
+      this._filmDetailsComponent.updateComments(this._serverComments, COMMENT_ACTIONS.DELETE);
     })
     .catch(() => {
-      alert('Error! Comment not deleted');
+      this._filmDetailsComponent.shake(null);
+      this._filmDetailsComponent.setAbortingComment(id);
     });    
   }
 
   _handleFilmCardClick() {
     this._api.getComments(this._film.id)
       .then((serverComments) => {
-        this._filmDetailsComponent = new FilmDetailsView(this._film, serverComments);
+        this._serverComments = serverComments.slice();
+        this._filmDetailsComponent = new FilmDetailsView(this._film, serverComments, this._api);
         this._filmDetailsComponent.setClickHandler(this._handleFilmCardCloseClick);
         this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchListFilmCardClick);
         this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedFilmCardClick);

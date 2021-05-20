@@ -22,7 +22,6 @@ const getComments = (comments) => {
 };
 
 export const createFilmCommentsTemplate = (comments) => {
-  console.log('comments: ', comments);
   return `
   <ul class="film-details__comments-list">
   ${getComments(comments)}

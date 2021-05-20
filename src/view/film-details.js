@@ -7,6 +7,7 @@ import { COMMENT_ACTIONS } from '../utils/const';
 
 const createFilmDetailsTemplate = (film = {}, serverComments) => {
   const {
+    id = '',
     title = '',
     poster = '',
     country = '',
@@ -149,6 +150,7 @@ export default class FilmDetails extends SmartView {
     this._data.newCommentText = '';
     this._isLoading = true;
     this._element = null;
+    this._isDisabled = false;
     this._loadingComponent = new LoadingView();
     this._clickHandler = this._clickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
@@ -163,7 +165,7 @@ export default class FilmDetails extends SmartView {
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._data, this._serverComments);
+    return createFilmDetailsTemplate(this._data, this._serverComments, this._isDisabled);
   }
 
   _clickHandler(evt) {
@@ -171,47 +173,29 @@ export default class FilmDetails extends SmartView {
     this._callback.click();
   }
 
-  /*
-  updateComments(data, commentAction, commentId) {
-    console.log('data: ',data);
-    this.updateData(
-      Object.assign(
-        {},
-        this._data,
-        {
-          comments: data,
-        },
-      ), true,
-    );
+  setDeletingComment(commentId) {
+    const deleteCommentElement = this._getDeletingComment(commentId);
 
-    switch(commentAction){
-      case COMMENT_ACTIONS.DELETE:
-        this._deleteComment(commentId);
-        break;
-      case COMMENT_ACTIONS.ADD:
-        console.log(111);
-        break;
-    }
-
+    if(deleteCommentElement != null){
+      deleteCommentElement.innerText = 'Deleting...';
+      deleteCommentElement.disabled = true;
+      //const commentsList = this.getElement().querySelector('.film-details__comments-list');
+      //commentsList.removeChild(deleteCommentElement.parentElement.parentElement.parentElement);
+    }    
   }
-*/
 
+  setAbortingComment(commentId) {
+    const deleteCommentElement = this._getDeletingComment(commentId);
 
-updateComments(data) {
-  console.log('updateComments: ', data);
-  this.updateData(
-    Object.assign(
-      {},
-      this._data,
-      {
-        comments: data,
-      },
-    ), false, // если true, то не обновиться кол-во комментов в попапе
-  );
-}
+    if(deleteCommentElement != null){
+      deleteCommentElement.innerText = 'Delete';
+      deleteCommentElement.disabled = false;
+      //const commentsList = this.getElement().querySelector('.film-details__comments-list');
+      //commentsList.removeChild(deleteCommentElement.parentElement.parentElement.parentElement);
+    }  
+  }
 
-
-  _deleteComment(commentId) {
+  _getDeletingComment(commentId) {
     let deleteCommentElement = null;
     const dataIds = document.querySelectorAll('[data-id]');
 
@@ -224,10 +208,28 @@ updateComments(data) {
       }
     });
 
-    if(deleteCommentElement != null){
-      const commentsList = this.getElement().querySelector('.film-details__comments-list');
-      commentsList.removeChild(deleteCommentElement.parentElement.parentElement.parentElement);
+    return deleteCommentElement;
+  }
+
+  updateComments(data, commentAction) {
+    this._serverComments = data.slice();
+    this.updateData(
+      Object.assign(
+        {},
+        this._data,
+        {
+          comments: data,
+        },
+      ), false,
+    );
+
+    if(commentAction === COMMENT_ACTIONS.ADD){
+      const addCommentEmotion = document.querySelector('.film-details__add-emoji-label');
+      const addCommentText = this.getElement().querySelector('.film-details__comment-input');
+      addCommentText.value = '';
+      addCommentEmotion.removeChild(addCommentEmotion.firstChild);
     }
+    this._scrollToEmoji();
   }
 
   _saveInputValueChanged(evt) {
@@ -304,14 +306,7 @@ updateComments(data) {
         emotion: addCommentEmotion.firstChild.src.split('\\').pop().split('/').pop().split('.')[0],
       };
 
-      // console.log('wwwwwww: ', this._data);
-      // this.updateData(
-      //   Object.assign(
-      //     {},
-      //     this._data,
-      //   ), true,
-      // );
-
+      this._data.newCommentText = '';
       this._callback.commentAddClick(addCommentObj);
     }
 
