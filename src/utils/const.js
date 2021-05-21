@@ -6,11 +6,6 @@ export const GENRES = [
   'Cartoon',
 ];
 
-export const EXTRA_CAPTIONS = [
-  'Top rated',
-  'Most commented',
-];
-
 export const EMOTIONS = [
   'angry',
   'puke',

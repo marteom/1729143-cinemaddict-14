@@ -4,8 +4,6 @@ import FilmsListView from '../view/films-list';
 import FilmsListCaptionView from '../view/films-list-caption';
 import FilmsListContainerView from '../view/films-list-container';
 import ShowMoreView from '../view/showmore-element';
-import FilmsListExtraView from '../view/films-list-extra';
-import FilmsListExtraCaptionView from '../view/films-list-extra-caption';
 import FilmsListEmptyView from '../view/films-list-empty';
 import LoadingView from '../view/loading.js';
 import ProfileView from '../view/profile';
@@ -40,8 +38,6 @@ export default class FilmList {
     this._filmsListCaptionViewComponent = new FilmsListCaptionView();
     this._filmsListContainerViewComponent = new FilmsListContainerView();
     this._showMoreViewComponent = new ShowMoreView();
-    this._filmsListExtraViewComponent = new FilmsListExtraView();
-    this._filmsListExtraCaptionViewComponent = new FilmsListExtraCaptionView();
     this._loadingComponent = new LoadingView();
     this._profileComponent = null;
     this._handleFilmChange = this._handleFilmChange.bind(this);
