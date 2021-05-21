@@ -25,14 +25,14 @@ siteMenu.init();
 filmList.init();
 
 const siteFooterElement = document.querySelector('.footer');
-const footerStatistic = siteFooterElement.querySelector('.footer__statistics');
+const footerStatisticElement = siteFooterElement.querySelector('.footer__statistics');
 
 api.getFilms()
   .then((films) => {
     filmsModel.setFilms(UPDATE_TYPE.INIT, films);
-    renderElement(footerStatistic, new FooterStatisticView(films.length), RenderPosition.BEFOREEND);
+    renderElement(footerStatisticElement, new FooterStatisticView(films.length), RenderPosition.BEFOREEND);
   })
   .catch(() => {
     filmsModel.setFilms(UPDATE_TYPE.INIT, []);
-    renderElement(footerStatistic, new FooterStatisticView(0), RenderPosition.BEFOREEND);
+    renderElement(footerStatisticElement, new FooterStatisticView(0), RenderPosition.BEFOREEND);
   });

@@ -1,7 +1,7 @@
 import FilmCardView from '../view/film-card';
 import FilmDetailsView from '../view/film-details';
 import { renderElement, RenderPosition, remove, replace } from '../utils/render';
-import { UPDATE_TYPE, COMMENT_ACTIONS } from '../utils/const';
+import { UPDATE_TYPE } from '../utils/const';
 import { getUtcDateNow } from '../utils/common';
 
 const Mode = {
@@ -17,7 +17,7 @@ export default class Film{
     this._api = api;
     this._handleFilmCardClick = this._handleFilmCardClick.bind(this);
     this._handleFilmCardCloseClick = this._handleFilmCardCloseClick.bind(this);
-    this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
+    this._handleEscKeyDownClick = this._handleEscKeyDownClick.bind(this);
     this._mode = Mode.DEFAULT;
     this._handleWatchListFilmCardClick = this._handleWatchListFilmCardClick.bind(this);
     this._handleWatchedFilmCardClick = this._handleWatchedFilmCardClick.bind(this);
@@ -107,7 +107,7 @@ export default class Film{
         );
 
         this._serverComments = response.comments;
-        this._filmDetailsComponent.updateComments(this._serverComments, COMMENT_ACTIONS.ADD);
+        this._filmDetailsComponent.updateComments(this._serverComments);
       })
       .catch(() => {
         this._filmDetailsComponent.enableCommentForm();
@@ -131,7 +131,7 @@ export default class Film{
         );
 
         this._serverComments = this._serverComments.filter((comment) => comment.id != id);
-        this._filmDetailsComponent.updateComments(this._serverComments, COMMENT_ACTIONS.DELETE);
+        this._filmDetailsComponent.updateComments(this._serverComments);
       })
       .catch(() => {
         this._filmDetailsComponent.setAbortingComment(id);
@@ -161,7 +161,7 @@ export default class Film{
     this._hideFilmDetails();
   }
 
-  _handleEscKeyDown(evt){
+  _handleEscKeyDownClick(evt){
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       this._hideFilmDetails();
@@ -173,14 +173,14 @@ export default class Film{
     this._mode = Mode.POPUP;
     document.body.appendChild(this._filmDetailsComponent.getElement());
     document.body.classList.add('hide-overflow');
-    document.addEventListener('keydown', this._handleEscKeyDown);
+    document.addEventListener('keydown', this._handleEscKeyDownClick);
   }
 
   _hideFilmDetails() {
     this._mode = Mode.DEFAULT;
     document.body.removeChild(this._filmDetailsComponent.getElement());
     document.body.classList.remove('hide-overflow');
-    document.removeEventListener('keydown', this._handleEscKeyDown);
+    document.removeEventListener('keydown', this._handleEscKeyDownClick);
   }
 
   resetView() {

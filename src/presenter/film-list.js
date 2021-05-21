@@ -139,7 +139,7 @@ export default class FilmList {
     if (this._currentSortType === SortType) {
       return;
     }
-    this._clearFilmsList();
+    this._clearFilmsList(true);
     this._renderFilmsList(this._getSortedFilms(SortType));
   }
 

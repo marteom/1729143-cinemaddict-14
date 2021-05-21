@@ -3,7 +3,6 @@ import LoadingView from './loading.js';
 import { getHumanizeDuration, getHumanizeReleaseDate } from '../utils/film';
 import SmartView from './smart.js';
 import { getUtcDateNow } from '../utils/common';
-import { COMMENT_ACTIONS } from '../utils/const';
 
 const createFilmDetailsTemplate = (film = {}, serverComments) => {
   const {
@@ -155,7 +154,8 @@ export default class FilmDetails extends SmartView {
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._favouriteClickHandler = this._favouriteClickHandler.bind(this);
     this._commentEmojiClickHandler = this._commentEmojiClickHandler.bind(this);
-    this._commentDeleteClickHandler = this._commentDeleteClickHandler.bind(this);
+    this._commentDeleteClickHandler =
+      this._commentDeleteClickHandler.bind(this);
     this._commentAddClickHandler = this._commentAddClickHandler.bind(this);
     this._saveInputValueChanged = this._saveInputValueChanged.bind(this);
     this.setCommentEmojiClickHandler();
@@ -173,7 +173,7 @@ export default class FilmDetails extends SmartView {
 
   setDeletingComment(commentId) {
     const deleteCommentElement = this._getDeletingComment(commentId);
-    if(deleteCommentElement != null){
+    if (deleteCommentElement !== null) {
       deleteCommentElement.innerText = 'Deleting...';
       deleteCommentElement.disabled = true;
     }
@@ -181,19 +181,23 @@ export default class FilmDetails extends SmartView {
 
   setAbortingComment(commentId) {
     const deleteCommentElement = this._getDeletingComment(commentId);
-    if(deleteCommentElement != null){
+    if (deleteCommentElement !== null) {
       deleteCommentElement.innerText = 'Delete';
       deleteCommentElement.disabled = false;
     }
   }
 
   disableCommentForm() {
-    const commentTextElement = this.getElement().querySelector('.film-details__comment-input');
+    const commentTextElement = this.getElement().querySelector(
+      '.film-details__comment-input',
+    );
     commentTextElement.disabled = true;
   }
 
   enableCommentForm() {
-    const commentTextElement = this.getElement().querySelector('.film-details__comment-input');
+    const commentTextElement = this.getElement().querySelector(
+      '.film-details__comment-input',
+    );
     commentTextElement.disabled = false;
   }
 
@@ -201,10 +205,8 @@ export default class FilmDetails extends SmartView {
     let deleteCommentElement = null;
     const dataIds = document.querySelectorAll('[data-id]');
 
-    dataIds.forEach((dataId) =>
-    {
-      if(dataId.dataset.id == commentId)
-      {
+    dataIds.forEach((dataId) => {
+      if (dataId.dataset.id === commentId) {
         deleteCommentElement = dataId;
         return;
       }
@@ -213,71 +215,70 @@ export default class FilmDetails extends SmartView {
     return deleteCommentElement;
   }
 
-  updateComments(data, commentAction) {
+  updateComments(data) {
     this._serverComments = data.slice();
     this.updateData(
-      Object.assign(
-        {},
-        this._data,
-        {
-          comments: data,
-        },
-      ), false,
+      Object.assign({}, this._data, {
+        comments: data,
+      }),
+      false,
     );
 
-    if(commentAction === COMMENT_ACTIONS.ADD){
-      const addCommentEmotion = document.querySelector('.film-details__add-emoji-label');
-      const addCommentText = this.getElement().querySelector('.film-details__comment-input');
-      addCommentText.value = '';
+    const addCommentEmotion = document.querySelector(
+      '.film-details__add-emoji-label',
+    );
+    const addCommentText = this.getElement().querySelector(
+      '.film-details__comment-input',
+    );
+
+    addCommentText.value = '';
+
+    if(addCommentEmotion.firstChild !== null){
       addCommentEmotion.removeChild(addCommentEmotion.firstChild);
     }
+
     this._scrollToEmoji();
   }
 
   _saveInputValueChanged(evt) {
     evt.preventDefault();
-    const commentText = this.getElement().querySelector('.film-details__comment-input');
+    const commentText = this.getElement().querySelector(
+      '.film-details__comment-input',
+    );
     this._data.newCommentText = commentText.value;
   }
 
   _watchlistClickHandler() {
     this.updateData(
-      Object.assign(
-        {},
-        this._data,
-        {
-          isWatchList: !this._data.isWatchList,
-        },
-      ), true,
+      Object.assign({}, this._data, {
+        isWatchList: !this._data.isWatchList,
+      }),
+      true,
     );
     this._callback.watchListClick();
   }
 
   _watchedClickHandler() {
     this.updateData(
-      Object.assign(
-        {},
-        this._data,
-        {
-          watched:{
-            already_watched: !this._data.watched.already_watched,
-            watching_date: this._data.watched.already_watched ? '' : getUtcDateNow(),
-          },
+      Object.assign({}, this._data, {
+        watched: {
+          already_watched: !this._data.watched.already_watched,
+          watching_date: this._data.watched.already_watched
+            ? ''
+            : getUtcDateNow(),
         },
-      ), true,
+      }),
+      true,
     );
     this._callback.watchedClick();
   }
 
   _favouriteClickHandler() {
     this.updateData(
-      Object.assign(
-        {},
-        this._data,
-        {
-          isFavorite: !this._data.isFavorite,
-        },
-      ), true,
+      Object.assign({}, this._data, {
+        isFavorite: !this._data.isFavorite,
+      }),
+      true,
     );
     this._callback.favouriteClick();
   }
@@ -288,24 +289,33 @@ export default class FilmDetails extends SmartView {
     this._scrollToEmoji();
   }
 
-  _commentAddClickHandler(evt){
-    if((evt.ctrlKey || evt.metaKey) && (evt.key === 'Enter')) {
+  _commentAddClickHandler(evt) {
+    if ((evt.ctrlKey || evt.metaKey) && evt.key === 'Enter') {
       evt.preventDefault();
 
-      const addCommentEmotion = document.querySelector('.film-details__add-emoji-label');
-      const addCommentText = this.getElement().querySelector('.film-details__comment-input');
+      const addCommentEmotion = document.querySelector(
+        '.film-details__add-emoji-label',
+      );
+      const addCommentText = this.getElement().querySelector(
+        '.film-details__comment-input',
+      );
 
-      if(addCommentEmotion.firstChild === null){
+      if (addCommentEmotion.firstChild === null) {
         return;
       }
 
-      if(addCommentText.value.trim() === '') {
+      if (addCommentText.value.trim() === '') {
         return;
       }
 
       const addCommentObj = {
         comment: addCommentText.value,
-        emotion: addCommentEmotion.firstChild.src.split('\\').pop().split('/').pop().split('.')[0],
+        emotion: addCommentEmotion.firstChild.src
+          .split('\\')
+          .pop()
+          .split('/')
+          .pop()
+          .split('.')[0],
       };
 
       this._data.newCommentText = '';
@@ -315,9 +325,11 @@ export default class FilmDetails extends SmartView {
     this._scrollToEmoji();
   }
 
-  _scrollToEmoji(){
-    const newCommentEmoji = document.querySelector('.film-details__add-emoji-label');
-    if(newCommentEmoji !== null){
+  _scrollToEmoji() {
+    const newCommentEmoji = document.querySelector(
+      '.film-details__add-emoji-label',
+    );
+    if (newCommentEmoji !== null) {
       newCommentEmoji.scrollIntoView();
     }
   }
@@ -326,13 +338,10 @@ export default class FilmDetails extends SmartView {
     evt.preventDefault();
     if (evt.target.tagName === 'IMG') {
       this.updateData(
-        Object.assign(
-          {},
-          this._data,
-          {
-            newCommentEmoji: evt.target.src,
-          },
-        ), false,
+        Object.assign({}, this._data, {
+          newCommentEmoji: evt.target.src,
+        }),
+        false,
       );
       const hiddenInputId = evt.target.parentElement.attributes['for'];
       const hiddenInput = document.getElementById(hiddenInputId.value);
@@ -344,64 +353,82 @@ export default class FilmDetails extends SmartView {
 
   setClickHandler(callback) {
     this._callback.click = callback;
-    const clickCloseBtn = this.getElement().querySelector('.film-details__close-btn');
-    if(clickCloseBtn !== null){
+    const clickCloseBtn = this.getElement().querySelector(
+      '.film-details__close-btn',
+    );
+    if (clickCloseBtn !== null) {
       clickCloseBtn.addEventListener('click', this._clickHandler);
     }
   }
 
   setWatchlistClickHandler(callback) {
     this._callback.watchListClick = callback;
-    const watchlistInput = this.getElement().querySelector('.film-details__control-label--watchlist');
-    if(watchlistInput !== null){
+    const watchlistInput = this.getElement().querySelector(
+      '.film-details__control-label--watchlist',
+    );
+    if (watchlistInput !== null) {
       watchlistInput.addEventListener('click', this._watchlistClickHandler);
     }
   }
 
   setWatchedClickHandler(callback) {
     this._callback.watchedClick = callback;
-    const watchedInput = this.getElement().querySelector('.film-details__control-label--watched');
-    if(watchedInput !== null){
+    const watchedInput = this.getElement().querySelector(
+      '.film-details__control-label--watched',
+    );
+    if (watchedInput !== null) {
       watchedInput.addEventListener('click', this._watchedClickHandler);
     }
   }
 
   setFavouriteClickHandler(callback) {
     this._callback.favouriteClick = callback;
-    const favouriteInput = this.getElement().querySelector('.film-details__control-label--favorite');
-    if(favouriteInput !== null){
+    const favouriteInput = this.getElement().querySelector(
+      '.film-details__control-label--favorite',
+    );
+    if (favouriteInput !== null) {
       favouriteInput.addEventListener('click', this._favouriteClickHandler);
     }
   }
 
   setCommentEmojiClickHandler(callback) {
     this._callback.commentEmojiClick = callback;
-    const newCommentEmoji = this.getElement().querySelector('.film-details__emoji-list');
-    if(newCommentEmoji !== null){
+    const newCommentEmoji = this.getElement().querySelector(
+      '.film-details__emoji-list',
+    );
+    if (newCommentEmoji !== null) {
       newCommentEmoji.addEventListener('click', this._commentEmojiClickHandler);
     }
   }
 
   setCommentTextChangedHandler(callback) {
     this._callback.commentTextChanged = callback;
-    const newCommentText = this.getElement().querySelector('.film-details__comment-input');
-    if(newCommentText !== null){
+    const newCommentText = this.getElement().querySelector(
+      '.film-details__comment-input',
+    );
+    if (newCommentText !== null) {
       newCommentText.addEventListener('input', this._saveInputValueChanged);
     }
   }
 
   setCommentDeleteClickHandler(callback) {
     this._callback.commentDeleteClick = callback;
-    const deleteComments = this.getElement().querySelectorAll('.film-details__comment-delete');
-    if(deleteComments.length > 0){
-      deleteComments.forEach((deleteComment) => deleteComment.addEventListener('click', this._commentDeleteClickHandler));
+    const deleteComments = this.getElement().querySelectorAll(
+      '.film-details__comment-delete',
+    );
+    if (deleteComments.length > 0) {
+      deleteComments.forEach((deleteComment) =>
+        deleteComment.addEventListener('click', this._commentDeleteClickHandler),
+      );
     }
   }
 
   setCommentAddClickHandler(callback) {
     this._callback.commentAddClick = callback;
-    const newCommentAdd = this.getElement().querySelector('.film-details__comment-input');
-    if(newCommentAdd !== null){
+    const newCommentAdd = this.getElement().querySelector(
+      '.film-details__comment-input',
+    );
+    if (newCommentAdd !== null) {
       newCommentAdd.addEventListener('keydown', this._commentAddClickHandler);
       newCommentAdd.addEventListener('input', this._saveInputValueChanged);
     }

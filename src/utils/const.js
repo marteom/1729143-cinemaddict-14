@@ -1,11 +1,3 @@
-export const GENRES = [
-  'Musical',
-  'Western',
-  'Drama',
-  'Comedy',
-  'Cartoon',
-];
-
 export const EMOTIONS = [
   'angry',
   'puke',

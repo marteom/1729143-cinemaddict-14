@@ -76,36 +76,35 @@ export default class Statistic {
   }
 
   _handleStatFilterChange(statFilter) {
-    const films = this._films;
-    let filmStatSorted = [];
+    let films = [];
 
     remove(this._statisticsViewComponent);
     remove(this._statisticTextViewComponent);
 
     switch (statFilter) {
       case STAT_FILTERS.ALL:
+        this._renderStatisticText(this._films);
+        this._renderStatisticsData(this._films);
+        break;
+      case STAT_FILTERS.TODAY:
+        films = getFilmsStatSorted(this._films, STAT_FILTERS.TODAY);
         this._renderStatisticText(films);
         this._renderStatisticsData(films);
         break;
-      case STAT_FILTERS.TODAY:
-        filmStatSorted = getFilmsStatSorted(films, STAT_FILTERS.TODAY);
-        this._renderStatisticText(filmStatSorted);
-        this._renderStatisticsData(filmStatSorted);
-        break;
       case STAT_FILTERS.WEEK:
-        filmStatSorted = getFilmsStatSorted(films, STAT_FILTERS.WEEK);
-        this._renderStatisticText(filmStatSorted);
-        this._renderStatisticsData(filmStatSorted);
+        films = getFilmsStatSorted(this._films, STAT_FILTERS.WEEK);
+        this._renderStatisticText(films);
+        this._renderStatisticsData(films);
         break;
       case STAT_FILTERS.MONTH:
-        filmStatSorted = getFilmsStatSorted(films, STAT_FILTERS.MONTH);
-        this._renderStatisticText(filmStatSorted);
-        this._renderStatisticsData(filmStatSorted);
+        films = getFilmsStatSorted(this._films, STAT_FILTERS.MONTH);
+        this._renderStatisticText(films);
+        this._renderStatisticsData(films);
         break;
       case STAT_FILTERS.YEAR:
-        filmStatSorted = getFilmsStatSorted(films, STAT_FILTERS.YEAR);
-        this._renderStatisticText(filmStatSorted);
-        this._renderStatisticsData(filmStatSorted);
+        films = getFilmsStatSorted(this._films, STAT_FILTERS.YEAR);
+        this._renderStatisticText(films);
+        this._renderStatisticsData(films);
         break;
     }
   }
