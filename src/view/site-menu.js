@@ -4,7 +4,7 @@ import { MENU_ITEMS } from '../utils/const';
 const createMainMenuItemTemplate = (menuItem, activeMenuItem) => {
   const {type, name, count} = menuItem;
   return (
-    name === 'all' ? `<a href="#all" class="main-navigation__item ${type === activeMenuItem ? 'main-navigation__item--active' : ''}">All movies</a>`
+    name === MENU_ITEMS.ALL ? `<a href="#${name}" class="main-navigation__item ${type === activeMenuItem ? 'main-navigation__item--active' : ''}">${MENU_ITEMS.ALL}</a>`
       : `<a href="#${name}" class="main-navigation__item ${type === activeMenuItem ? 'main-navigation__item--active' : ''}">${name.charAt(0).toUpperCase() + name.slice(1)} <span class="main-navigation__item-count">${count}</span></a>`
   );
 
