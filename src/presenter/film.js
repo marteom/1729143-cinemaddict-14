@@ -68,8 +68,8 @@ export default class Film{
         this._film,
         {
           watched:{
-            already_watched: !this._film.watched.already_watched,
-            watching_date: this._film.watched.already_watched ? '' : getUtcDateNow(),
+            alreadyWatched: !this._film.watched.alreadyWatched,
+            watchingDate: this._film.watched.alreadyWatched ? '' : getUtcDateNow(),
           },
         },
       ),
@@ -125,12 +125,12 @@ export default class Film{
             {},
             this._film,
             {
-              comments: this._film.comments.filter((comment) => comment != id),
+              comments: this._film.comments.filter((comment) => comment !== id),
             },
           ),
         );
 
-        this._serverComments = this._serverComments.filter((comment) => comment.id != id);
+        this._serverComments = this._serverComments.filter((comment) => comment.id !== id);
         this._filmDetailsComponent.updateComments(this._serverComments);
       })
       .catch(() => {

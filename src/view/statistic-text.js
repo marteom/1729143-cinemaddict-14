@@ -5,14 +5,14 @@ import { getGenresCounts } from '../utils/statistic';
 const createStatisticTextTemplate = (films, genresCounts) => {
   const getTotalDuration = () => {
     let totalDuration = 0;
-    films.forEach((film) => film.watched.already_watched ? totalDuration += film.duration : '');
+    films.forEach((film) => film.watched.alreadyWatched ? totalDuration += film.duration : '');
     return {
       hours: dayjs({ minute: totalDuration }).hour(),
       minutes: dayjs({ minute: totalDuration }).minute(),
     };
   };
 
-  const youWatchedValue =  films.filter((film) => film.watched.already_watched).length;
+  const youWatchedValue =  films.filter((film) => film.watched.alreadyWatched).length;
   const totalDurationValue = getTotalDuration();
 
   const getTopGenre = () => {
@@ -26,7 +26,9 @@ const createStatisticTextTemplate = (films, genresCounts) => {
         max = val;
         return [key];
       }
-      if (val === max) a.push(key);
+      if (val === max) {
+        a.push(key);
+      }
       return a;
     }, []);
 

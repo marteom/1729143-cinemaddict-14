@@ -1,7 +1,7 @@
 export const getGenresCounts = (films) => {
   const allGenres = [];
   films.forEach((film) => {
-    if(film.watched.already_watched){
+    if(film.watched.alreadyWatched){
       allGenres.push(...film.genres);
     }
   });

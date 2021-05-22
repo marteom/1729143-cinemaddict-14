@@ -48,7 +48,7 @@ export default class SiteMenu {
       {
         type: MENU_ITEMS.HISTORY,
         name: 'History',
-        count: films.filter((film) => film.watched.already_watched).length,
+        count: films.filter((film) => film.watched.alreadyWatched).length,
       },
       {
         type: MENU_ITEMS.FAVORITES,

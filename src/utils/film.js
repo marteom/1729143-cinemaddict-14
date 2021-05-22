@@ -29,26 +29,26 @@ export const getFilmsStatSorted = (films, statFilter) => {
   const filmsStat = [];
 
   films.forEach((film) => {
-    if(!film.watched.already_watched){
+    if(!film.watched.alreadyWatched){
       return;
     }
 
     switch (statFilter) {
       case STAT_FILTERS.TODAY:
         dayjs.extend(isToday);
-        dayjs(film.watched.watching_date).isToday() ? filmsStat.push(film) : '';
+        dayjs(film.watched.watchingDate).isToday() ? filmsStat.push(film) : '';
         break;
       case STAT_FILTERS.WEEK:
         dayjs.extend(isBetween);
-        dayjs(film.watched.watching_date).isBetween(dayjs().subtract(1, 'week'), dayjs()) ? filmsStat.push(film) : '';
+        dayjs(film.watched.watchingDate).isBetween(dayjs().subtract(1, 'week'), dayjs()) ? filmsStat.push(film) : '';
         break;
       case STAT_FILTERS.MONTH:
         dayjs.extend(isBetween);
-        dayjs(film.watched.watching_date).isBetween(dayjs().subtract(1, 'month'), dayjs()) ? filmsStat.push(film) : '';
+        dayjs(film.watched.watchingDate).isBetween(dayjs().subtract(1, 'month'), dayjs()) ? filmsStat.push(film) : '';
         break;
       case STAT_FILTERS.YEAR:
         dayjs.extend(isBetween);
-        dayjs(film.watched.watching_date).isBetween(dayjs().subtract(1, 'year'), dayjs()) ? filmsStat.push(film) : '';
+        dayjs(film.watched.watchingDate).isBetween(dayjs().subtract(1, 'year'), dayjs()) ? filmsStat.push(film) : '';
         break;
     }
   });

@@ -18,7 +18,7 @@ import { SORT_TYPE, UPDATE_TYPE, MENU_ITEMS } from '../utils/const';
 import { menuItems } from '../utils/site-menu';
 
 const FILM_COUNT_PER_STEP = 5;
-let film_count_showed = FILM_COUNT_PER_STEP;
+let filmCountShowed = FILM_COUNT_PER_STEP;
 
 export default class FilmList {
   constructor(siteHeaderElement, siteMainElement, filmsModel, menusModel, api) {
@@ -108,7 +108,7 @@ export default class FilmList {
 
       this._renderSort();
 
-      for (let i = 0; i < film_count_showed; i++) {
+      for (let i = 0; i < filmCountShowed; i++) {
         if (films.length > i) {
           this._renderFilmCard(
             this._filmsListContainerViewComponent,
@@ -117,7 +117,7 @@ export default class FilmList {
         }
       }
 
-      if (films.length > film_count_showed) {
+      if (films.length > filmCountShowed) {
         this._renderShowMoreButton();
       }
 
@@ -130,7 +130,7 @@ export default class FilmList {
       remove(this._profileComponent);
     }
 
-    const watchedFilmsCount = films.filter((film) => film.watched.already_watched).length;
+    const watchedFilmsCount = films.filter((film) => film.watched.alreadyWatched).length;
     this._profileComponent = new ProfileView(getProfileRating(watchedFilmsCount));
     renderElement(this._siteHeaderElement, this._profileComponent, RenderPosition.BEFOREEND);
   }
@@ -203,14 +203,14 @@ export default class FilmList {
   _handleShowMoreButtonClick() {
     const films = this._getSortedFilms(this._currentSortType);
     films
-      .slice(film_count_showed, film_count_showed + FILM_COUNT_PER_STEP)
+      .slice(filmCountShowed, filmCountShowed + FILM_COUNT_PER_STEP)
       .forEach((film) => {
         this._renderFilmCard(this._filmsListContainerViewComponent, film);
       });
 
-    film_count_showed += FILM_COUNT_PER_STEP;
+    filmCountShowed += FILM_COUNT_PER_STEP;
 
-    if (film_count_showed >= films.length) {
+    if (filmCountShowed >= films.length) {
       remove(this._showMoreViewComponent);
     }
   }
@@ -257,7 +257,7 @@ export default class FilmList {
       );
     this._filmPresenter = {};
 
-    resetFilmsShowed ? film_count_showed = FILM_COUNT_PER_STEP : '';
+    resetFilmsShowed ? filmCountShowed = FILM_COUNT_PER_STEP : '';
 
     remove(this._loadingComponent);
     remove(this._showMoreViewComponent);
