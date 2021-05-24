@@ -1,10 +1,3 @@
-export const EMOTIONS = [
-  'angry',
-  'puke',
-  'sleeping',
-  'smile',
-];
-
 export const SORT_TYPE = {
   DEFAULT: 'default',
   DATE: 'date',
@@ -38,3 +31,9 @@ export const COMMENT_ACTIONS = {
   DELETE: 'Delete',
   ADD: 'Add,',
 };
+
+export const RATING_VALUES = {
+  NOVICE: 10,
+  FAN: 20,
+  MOVIE_BUFF: 21,
+}

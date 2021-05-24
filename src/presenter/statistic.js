@@ -2,6 +2,7 @@ import { getFilmsStatSorted } from '../utils/film';
 import { STAT_FILTERS } from '../utils/const';
 
 import { renderElement, RenderPosition, remove } from '../utils/render';
+import { getProfileRating } from '../utils/common';
 
 import StatisticsView from '../view/statistics';
 import StatisticFiltersView from '../view/statistic-filters';
@@ -32,7 +33,9 @@ export default class Statistic {
       RenderPosition.BEFOREEND,
     );
 
-    this._statisticRankViewComponent = new StatisticRankView();
+    const watchedFilmsCount = films.filter((film) => film.watched.alreadyWatched).length;
+
+    this._statisticRankViewComponent = new StatisticRankView(getProfileRating(watchedFilmsCount));
     renderElement(
       this._statisticSectionViewComponent,
       this._statisticRankViewComponent,
