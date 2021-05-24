@@ -39,7 +39,7 @@ export default class SiteMenu extends AbstractView {
     evt.preventDefault();
     if(evt.target.className.trim() === 'main-navigation__item' || evt.target.className.trim() === 'main-navigation__item-count' || evt.target.className.trim() === 'main-navigation__additional'){
       const targetElement = evt.target.tagName === 'A' ? evt.target : evt.target.tagName === 'SPAN' ? evt.target.parentElement : '';
-      const hrefMenu = targetElement.getAttribute("href");
+      const hrefMenu = targetElement.getAttribute('href');
       const menuItem = hrefMenu.slice(1, hrefMenu.length);
       this._callback.activeMenuItemChange(menuItem);
     }
